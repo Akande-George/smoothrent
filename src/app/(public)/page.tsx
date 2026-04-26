@@ -66,7 +66,7 @@ export default function HomePage() {
             <p className="animate-fade-up-2 mt-7 max-w-xl text-base leading-7 text-muted-strong sm:text-lg">
               SmoothRent connects verified landlords, agents and tenants on a single
               platform — from Yaba self-contains to Eko Atlantic penthouses. Digital
-              leases, escrowed rent, and zero hidden agent fees.
+              leases, escrowed rent, and a transparent service fee — set by SmoothRent, no surprises.
             </p>
 
             <div className="animate-fade-up-3 mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">

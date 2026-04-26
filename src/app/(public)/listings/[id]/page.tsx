@@ -15,6 +15,7 @@ import { Avatar } from "@/components/ui/avatar";
 import { PropertyGallery } from "@/components/property/property-gallery";
 import { PropertyDetails } from "@/components/property/property-details";
 import { PropertyGrid } from "@/components/property/property-grid";
+import { PropertyActions } from "@/components/property/property-actions";
 import { mockProperties, mockUsers } from "@/lib/mock-data";
 
 export default async function PropertyDetailPage({
@@ -96,34 +97,7 @@ export default async function PropertyDetailPage({
         </div>
 
         <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
-          <article className="relative overflow-hidden rounded-[24px] border border-emerald-deep bg-emerald p-6 text-ivory">
-            <div className="grain-soft mix-blend-overlay" />
-            <div className="pointer-events-none absolute -right-12 -top-12 h-44 w-44 rounded-full sun-gradient opacity-70" />
-            <div className="relative">
-              <span className="inline-flex rounded-full bg-saffron px-2.5 py-1 text-[10px] uppercase tracking-[0.22em] text-emerald-deep">
-                {property.type}
-              </span>
-              <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.28em] text-ivory/65">
-                {property.rentType === "Per Event" ? "Per event" : "Annual rent"}
-              </p>
-              <p className="mt-1 font-display text-4xl">{formatNGN(property.price)}</p>
-              <div className="mt-5 space-y-2">
-                <Button variant="accent" className="w-full">
-                  Apply now
-                  <ArrowUpRight className="h-4 w-4" />
-                </Button>
-                <Button variant="ivory" className="w-full">
-                  Book inspection
-                </Button>
-                <button
-                  type="button"
-                  className="w-full rounded-full px-5 py-3 text-xs font-medium uppercase tracking-[0.22em] text-ivory/85 transition hover:text-saffron"
-                >
-                  Request virtual tour
-                </button>
-              </div>
-            </div>
-          </article>
+          <PropertyActions property={property} />
 
           {lister && (
             <article className="rounded-[24px] border border-line bg-paper p-5">

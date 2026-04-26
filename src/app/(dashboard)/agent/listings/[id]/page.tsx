@@ -175,9 +175,9 @@ export default async function ListingDetailPage({
                 </div>
               )}
               <div className="flex justify-between">
-                <span className="text-sm text-muted">Agent Fee</span>
+                <span className="text-sm text-muted">Service Fee</span>
                 <Currency
-                  amount={property.agentFee}
+                  amount={property.serviceFee}
                   className="text-sm font-medium text-foreground"
                 />
               </div>
@@ -191,7 +191,7 @@ export default async function ListingDetailPage({
                       property.price +
                       property.cautionFee +
                       property.serviceCharge +
-                      property.agentFee
+                      property.serviceFee
                     }
                     className="font-display text-lg text-foreground"
                   />

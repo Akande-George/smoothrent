@@ -10,7 +10,7 @@ export interface Property {
   price: number;
   cautionFee: number;
   serviceCharge: number;
-  agentFee: number;
+  serviceFee: number;
   bedrooms: number;
   bathrooms: number;
   toilets: number;

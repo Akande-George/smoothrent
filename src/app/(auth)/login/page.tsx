@@ -45,7 +45,7 @@ function LoginSkeleton() {
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { setRole } = useMockAuth();
+  const { signIn } = useMockAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -55,7 +55,7 @@ function LoginForm() {
 
   const next = searchParams.get("next");
 
-  const signIn = async (overrideEmail?: string, overridePassword?: string) => {
+  const handleSignIn = async (overrideEmail?: string, overridePassword?: string) => {
     setError(null);
     const e = (overrideEmail ?? email).trim().toLowerCase();
     const p = overridePassword ?? password;
@@ -79,7 +79,7 @@ function LoginForm() {
       return;
     }
 
-    setRole(user.role);
+    signIn(user.role);
     router.push(next || `/${user.role}`);
   };
 
@@ -107,7 +107,7 @@ function LoginForm() {
         className="space-y-4"
         onSubmit={(e) => {
           e.preventDefault();
-          signIn();
+          handleSignIn();
         }}
       >
         <Input
@@ -215,7 +215,7 @@ function LoginForm() {
               type="button"
               onClick={() => {
                 setEmail(q.email);
-                signIn(q.email, "demo");
+                handleSignIn(q.email, "demo");
               }}
               disabled={loading}
               className="rounded-full border border-line bg-paper px-3 py-2 text-xs font-medium text-foreground transition hover:border-emerald hover:bg-emerald hover:text-ivory"

@@ -27,7 +27,7 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
     price: property?.price?.toString() || "",
     cautionFee: property?.cautionFee?.toString() || "",
     serviceCharge: property?.serviceCharge?.toString() || "",
-    agentFee: property?.agentFee?.toString() || "",
+    serviceFee: property?.serviceFee?.toString() || "",
     bedrooms: property?.bedrooms?.toString() || "",
     bathrooms: property?.bathrooms?.toString() || "",
     toilets: property?.toilets?.toString() || "",
@@ -160,10 +160,10 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
               onChange={(e) => update("serviceCharge", e.target.value)}
             />
             <Input
-              label="Agent Fee"
+              label="Service Fee"
               type="number"
-              value={form.agentFee}
-              onChange={(e) => update("agentFee", e.target.value)}
+              value={form.serviceFee}
+              onChange={(e) => update("serviceFee", e.target.value)}
             />
           </div>
         </CardContent>

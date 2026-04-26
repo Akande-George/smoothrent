@@ -23,6 +23,7 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
   Bell,
+  Sparkles,
 } from "lucide-react";
 import type { UserRole } from "@/types/user";
 import { SidebarItem } from "./sidebar-item";
@@ -36,6 +37,7 @@ const navConfig: Record<UserRole, { href: string; icon: React.ComponentType<{ cl
     { href: "/customer/applications", icon: FileText, label: "Applications" },
     { href: "/customer/payments", icon: CreditCard, label: "Payments" },
     { href: "/customer/leases", icon: ScrollText, label: "Leases" },
+    { href: "/customer/services", icon: Sparkles, label: "Services" },
     { href: "/customer/maintenance", icon: Wrench, label: "Maintenance" },
     { href: "/customer/referrals", icon: Handshake, label: "Referrals" },
     { href: "/customer/notifications", icon: Bell, label: "Notifications" },
@@ -83,30 +85,34 @@ export function Sidebar({
   isCollapsed,
   onToggle,
   onCloseMobile,
+  onLogout,
 }: {
   role: UserRole;
   isCollapsed: boolean;
   onToggle: () => void;
   onCloseMobile?: () => void;
+  onLogout?: () => void;
 }) {
   const items = navConfig[role];
 
   return (
     <aside
       className={cn(
-        "flex h-full flex-col border-r border-black/10 bg-white/70 backdrop-blur transition-all duration-200",
+        "flex h-full flex-col border-r border-line bg-paper/80 backdrop-blur transition-all duration-200",
         isCollapsed ? "w-[72px]" : "w-64"
       )}
     >
       {/* Logo */}
       <div className={cn("flex items-center gap-3 p-4", isCollapsed && "justify-center")}>
-        <Link href={`/${role}`} className="flex items-center gap-3">
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-black text-sm font-semibold text-white">
-            SR
-          </span>
+        <Link
+          href={`/${role}`}
+          aria-label="SmoothRent dashboard"
+          className="flex items-center gap-2.5 text-emerald"
+        >
+          <span className="brand-logo h-10 w-10 shrink-0" role="img" aria-hidden="true" />
           {!isCollapsed && (
-            <span className="text-xs uppercase tracking-[0.3em] text-muted">
-              SmoothRent
+            <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-muted">
+              Lagos · Abuja
             </span>
           )}
         </Link>
@@ -127,11 +133,11 @@ export function Sidebar({
       </nav>
 
       {/* Bottom */}
-      <div className="border-t border-black/10 p-3 space-y-1">
+      <div className="border-t border-line p-3 space-y-1">
         <button
           onClick={onToggle}
           className={cn(
-            "flex w-full items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium text-muted transition-colors hover:bg-black/5 hover:text-foreground",
+            "flex w-full items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium text-muted transition-colors hover:bg-emerald/[0.06] hover:text-foreground",
             isCollapsed && "justify-center px-2"
           )}
         >
@@ -145,10 +151,16 @@ export function Sidebar({
           )}
         </button>
         <button
+          type="button"
+          onClick={() => {
+            onCloseMobile?.();
+            onLogout?.();
+          }}
           className={cn(
-            "flex w-full items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium text-muted transition-colors hover:bg-black/5 hover:text-foreground",
+            "flex w-full items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium text-clay transition-colors hover:bg-clay/10 hover:text-clay-deep",
             isCollapsed && "justify-center px-2"
           )}
+          title="Sign out"
         >
           <LogOut className="h-5 w-5" />
           {!isCollapsed && <span>Logout</span>}

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { ArrowLeft, ArrowRight, Check } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ArrowLeft, ArrowRight, Check, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -11,6 +11,11 @@ import { FileUpload } from "@/components/ui/file-upload";
 import { Card, CardContent } from "@/components/ui/card";
 import { PROPERTY_TYPES, NIGERIAN_STATES, MAJOR_CITIES, AMENITIES } from "@/lib/constants";
 import { formatNaira } from "@/lib/format";
+import {
+  computeServiceFee,
+  readServiceFeeConfig,
+  type ServiceFeeConfig,
+} from "@/lib/service-fee-config";
 
 const STEPS = [
   "Property Type",
@@ -23,6 +28,8 @@ const STEPS = [
 
 export default function NewPropertyPage() {
   const [step, setStep] = useState(0);
+  const [feeConfig, setFeeConfig] = useState<ServiceFeeConfig | null>(null);
+  const [feeAutofilled, setFeeAutofilled] = useState(false);
   const [form, setForm] = useState({
     type: "",
     title: "",
@@ -34,13 +41,35 @@ export default function NewPropertyPage() {
     price: "",
     cautionFee: "",
     serviceCharge: "",
-    agentFee: "",
+    serviceFee: "",
     bedrooms: "",
     bathrooms: "",
     toilets: "",
     amenities: [] as string[],
     photos: [] as File[],
   });
+
+  useEffect(() => {
+    setFeeConfig(readServiceFeeConfig());
+  }, []);
+
+  useEffect(() => {
+    if (!feeConfig) return;
+    if (feeAutofilled) return;
+    const rent = Number(form.price || 0);
+    if (rent > 0) {
+      setForm((prev) => ({
+        ...prev,
+        serviceFee: String(computeServiceFee(rent, feeConfig)),
+      }));
+      setFeeAutofilled(true);
+    }
+  }, [form.price, feeConfig, feeAutofilled]);
+
+  const recommendedFee =
+    feeConfig && form.price
+      ? computeServiceFee(Number(form.price), feeConfig)
+      : null;
 
   const update = (key: string, value: unknown) =>
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -165,12 +194,33 @@ export default function NewPropertyPage() {
                 onChange={(e) => update("serviceCharge", e.target.value)}
               />
               <Input
-                label="Agent Fee"
+                label="Service Fee"
                 type="number"
                 placeholder="e.g. 350000"
-                value={form.agentFee}
-                onChange={(e) => update("agentFee", e.target.value)}
+                hint={
+                  recommendedFee
+                    ? `SmoothRent suggests ${formatNaira(recommendedFee)}`
+                    : "Set by admin"
+                }
+                value={form.serviceFee}
+                onChange={(e) => update("serviceFee", e.target.value)}
               />
+              {feeConfig && (
+                <div className="rounded-2xl border border-line bg-paper p-4 text-xs text-muted-strong">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="h-3.5 w-3.5 text-saffron-deep" />
+                    <p className="font-mono uppercase tracking-[0.32em] text-muted">
+                      Admin-set platform fee
+                    </p>
+                  </div>
+                  <p className="mt-2 leading-5">
+                    {feeConfig.mode === "percent"
+                      ? `Default ${feeConfig.percentOfRent}% of annual rent (min ${formatNaira(feeConfig.minAmount)} · max ${formatNaira(feeConfig.maxAmount)}).`
+                      : `Flat ${formatNaira(feeConfig.fixedAmount)} per listing.`}{" "}
+                    Override here if needed.
+                  </p>
+                </div>
+              )}
             </div>
           )}
 

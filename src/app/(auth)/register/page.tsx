@@ -61,7 +61,7 @@ type FormState = {
 
 export default function RegisterPage() {
   const router = useRouter();
-  const { setRole: setAuthRole } = useMockAuth();
+  const { signIn } = useMockAuth();
 
   const [step, setStep] = useState(1);
   const [role, setRole] = useState<UserRole>("customer");
@@ -102,7 +102,7 @@ export default function RegisterPage() {
     if (!validate()) return;
     setLoading(true);
     await new Promise((r) => setTimeout(r, 750));
-    setAuthRole(role);
+    signIn(role);
     setLoading(false);
     router.push("/verify-email");
   };

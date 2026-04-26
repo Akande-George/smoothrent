@@ -4,23 +4,23 @@
   --background: #f1e9d7;
   --background-deep: #ebe1cb;
   --paper: #f7f0de;
-  --foreground: #0c1f17;
-  --foreground-soft: #1a2e25;
-  --muted: #5a6a5e;
-  --muted-strong: #3c4a40;
+  --foreground: #0a0a0a;
+  --foreground-soft: #1c1c1c;
+  --muted: #6b6b6b;
+  --muted-strong: #3c3c3c;
   --card: #fbf5e6;
-  --line: rgba(12, 31, 23, 0.12);
-  --line-strong: rgba(12, 31, 23, 0.32);
-  --emerald: #16382b;
-  --emerald-deep: #0e2a20;
-  --emerald-soft: #2a5443;
+  --line: rgba(10, 10, 10, 0.12);
+  --line-strong: rgba(10, 10, 10, 0.32);
+  --emerald: #0a0a0a;
+  --emerald-deep: #000000;
+  --emerald-soft: #262626;
   --saffron: #d99a2b;
   --saffron-deep: #a96e16;
   --clay: #b9532b;
   --clay-deep: #8b3a1b;
   --sand: #e6d3a4;
   --ivory: #f5ecd6;
-  --ring: rgba(12, 31, 23, 0.2);
+  --ring: rgba(10, 10, 10, 0.2);
   --accent: #d99a2b;
   --accent-strong: #a96e16;
   --success: #1f7a4d;
@@ -162,7 +162,7 @@ body {
   background: var(--emerald);
   color: var(--ivory);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06),
-    0 12px 30px -22px rgba(12, 31, 23, 0.7);
+    0 12px 30px -22px rgba(0, 0, 0, 0.6);
 }
 .btn-emerald:hover {
   background: var(--emerald-deep);
@@ -186,7 +186,7 @@ body {
 }
 .btn-outline:hover {
   border-color: var(--emerald);
-  background: rgba(22, 56, 43, 0.06);
+  background: rgba(10, 10, 10, 0.05);
 }
 
 .btn-ivory {
@@ -203,7 +203,7 @@ body {
   color: var(--foreground);
 }
 .btn-ghost:hover {
-  background: rgba(12, 31, 23, 0.05);
+  background: rgba(10, 10, 10, 0.05);
 }
 
 .btn-link {
@@ -236,7 +236,7 @@ body {
 }
 .field-shell:focus-within {
   border-color: var(--emerald);
-  box-shadow: 0 0 0 3px rgba(22, 56, 43, 0.12);
+  box-shadow: 0 0 0 3px rgba(10, 10, 10, 0.12);
   background: var(--card);
 }
 
@@ -269,9 +269,9 @@ body {
 .canopy-gradient {
   background: radial-gradient(
     circle at 50% 100%,
-    rgba(22, 56, 43, 0.45) 0%,
-    rgba(22, 56, 43, 0.1) 36%,
-    rgba(22, 56, 43, 0) 70%
+    rgba(10, 10, 10, 0.45) 0%,
+    rgba(10, 10, 10, 0.1) 36%,
+    rgba(10, 10, 10, 0) 70%
   );
 }
 
@@ -286,8 +286,8 @@ body {
 .tropical-stripes {
   background: repeating-linear-gradient(
     -28deg,
-    rgba(22, 56, 43, 0.08) 0px,
-    rgba(22, 56, 43, 0.08) 1px,
+    rgba(10, 10, 10, 0.1) 0px,
+    rgba(10, 10, 10, 0.1) 1px,
     transparent 1px,
     transparent 14px
   );
@@ -385,6 +385,20 @@ body {
     black 92%,
     transparent 100%
   );
+}
+
+/* ── Brand logo (mask the white SVG so it picks up currentColor) ─ */
+.brand-logo {
+  display: inline-block;
+  background-color: currentColor;
+  -webkit-mask-image: url("/logo.svg");
+  mask-image: url("/logo.svg");
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-position: center;
+  mask-position: center;
 }
 
 /* ── Utility classes for legacy components ───────── */

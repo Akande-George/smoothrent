@@ -9,22 +9,22 @@ export function MobileNav({
   role,
   isOpen,
   onClose,
+  onLogout,
 }: {
   role: UserRole;
   isOpen: boolean;
   onClose: () => void;
+  onLogout?: () => void;
 }) {
   return (
     <>
-      {/* Backdrop */}
       <div
         className={cn(
-          "fixed inset-0 z-40 bg-black/40 transition-opacity lg:hidden",
+          "fixed inset-0 z-40 bg-emerald-deep/40 transition-opacity lg:hidden",
           isOpen ? "opacity-100" : "pointer-events-none opacity-0"
         )}
         onClick={onClose}
       />
-      {/* Drawer */}
       <div
         className={cn(
           "fixed inset-y-0 left-0 z-50 w-64 transition-transform duration-200 lg:hidden",
@@ -32,7 +32,11 @@ export function MobileNav({
         )}
       >
         <div className="absolute right-2 top-3 z-10">
-          <button onClick={onClose} className="rounded-full p-2 hover:bg-black/5">
+          <button
+            onClick={onClose}
+            className="rounded-full p-2 hover:bg-black/5"
+            aria-label="Close menu"
+          >
             <X className="h-5 w-5" />
           </button>
         </div>
@@ -41,6 +45,7 @@ export function MobileNav({
           isCollapsed={false}
           onToggle={() => {}}
           onCloseMobile={onClose}
+          onLogout={onLogout}
         />
       </div>
     </>

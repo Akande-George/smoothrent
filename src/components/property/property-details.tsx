@@ -4,7 +4,7 @@ import type { Property } from "@/types/property";
 
 export function PropertyDetails({ property }: { property: Property }) {
   const total =
-    property.price + property.cautionFee + property.serviceCharge + property.agentFee;
+    property.price + property.cautionFee + property.serviceCharge + property.serviceFee;
 
   const specs = [
     property.bedrooms > 0 && {
@@ -54,7 +54,7 @@ export function PropertyDetails({ property }: { property: Property }) {
             { label: "Annual rent", value: property.price },
             { label: "Caution fee (refundable)", value: property.cautionFee },
             { label: "Service charge", value: property.serviceCharge },
-            { label: "Agent fee", value: property.agentFee },
+            { label: "Service fee", value: property.serviceFee },
           ]
             .filter((row) => row.value > 0)
             .map((row) => (
