@@ -1,0 +1,302 @@
+"use client";
+
+import { useState } from "react";
+import { ArrowLeft, ArrowRight, Check } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Select } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { FileUpload } from "@/components/ui/file-upload";
+import { Card, CardContent } from "@/components/ui/card";
+import { PROPERTY_TYPES, NIGERIAN_STATES, MAJOR_CITIES, AMENITIES } from "@/lib/constants";
+import { formatNaira } from "@/lib/format";
+
+const STEPS = [
+  "Property Type",
+  "Location",
+  "Pricing",
+  "Features",
+  "Photos",
+  "Review",
+];
+
+export default function NewPropertyPage() {
+  const [step, setStep] = useState(0);
+  const [form, setForm] = useState({
+    type: "",
+    title: "",
+    description: "",
+    state: "",
+    city: "",
+    area: "",
+    address: "",
+    price: "",
+    cautionFee: "",
+    serviceCharge: "",
+    agentFee: "",
+    bedrooms: "",
+    bathrooms: "",
+    toilets: "",
+    amenities: [] as string[],
+    photos: [] as File[],
+  });
+
+  const update = (key: string, value: unknown) =>
+    setForm((prev) => ({ ...prev, [key]: value }));
+
+  const toggleAmenity = (amenity: string) => {
+    setForm((prev) => ({
+      ...prev,
+      amenities: prev.amenities.includes(amenity)
+        ? prev.amenities.filter((a) => a !== amenity)
+        : [...prev.amenities, amenity],
+    }));
+  };
+
+  const cities = form.state ? MAJOR_CITIES[form.state] || [] : [];
+
+  return (
+    <div className="mx-auto max-w-2xl space-y-6">
+      <div>
+        <h1 className="font-display text-3xl text-foreground">Add New Property</h1>
+        <p className="text-sm text-muted">
+          Step {step + 1} of {STEPS.length} &mdash; {STEPS[step]}
+        </p>
+      </div>
+
+      {/* Step Indicator */}
+      <div className="flex gap-2">
+        {STEPS.map((_, i) => (
+          <div
+            key={i}
+            className={`h-1.5 flex-1 rounded-full transition-colors ${
+              i <= step ? "bg-accent" : "bg-black/10"
+            }`}
+          />
+        ))}
+      </div>
+
+      <Card>
+        <CardContent className="pt-6">
+          {/* Step 1: Type */}
+          {step === 0 && (
+            <div className="space-y-4">
+              <Select
+                label="Property Type"
+                placeholder="Select type"
+                options={PROPERTY_TYPES.map((t) => ({ label: t, value: t }))}
+                value={form.type}
+                onValueChange={(v) => update("type", v)}
+              />
+              <Input
+                label="Property Title"
+                placeholder="e.g. Luxury 3 Bedroom Flat in Lekki"
+                value={form.title}
+                onChange={(e) => update("title", e.target.value)}
+              />
+              <Textarea
+                label="Description"
+                placeholder="Describe the property..."
+                value={form.description}
+                onChange={(e) => update("description", e.target.value)}
+                rows={4}
+              />
+            </div>
+          )}
+
+          {/* Step 2: Location */}
+          {step === 1 && (
+            <div className="space-y-4">
+              <Select
+                label="State"
+                placeholder="Select state"
+                options={NIGERIAN_STATES.map((s) => ({ label: s, value: s }))}
+                value={form.state}
+                onValueChange={(v) => {
+                  update("state", v);
+                  update("city", "");
+                }}
+              />
+              <Select
+                label="City"
+                placeholder="Select city"
+                options={cities.map((c) => ({ label: c, value: c }))}
+                value={form.city}
+                onValueChange={(v) => update("city", v)}
+              />
+              <Input
+                label="Area"
+                placeholder="e.g. Phase 1"
+                value={form.area}
+                onChange={(e) => update("area", e.target.value)}
+              />
+              <Input
+                label="Full Address"
+                placeholder="e.g. 12 Admiralty Way"
+                value={form.address}
+                onChange={(e) => update("address", e.target.value)}
+              />
+            </div>
+          )}
+
+          {/* Step 3: Pricing */}
+          {step === 2 && (
+            <div className="space-y-4">
+              <Input
+                label="Annual Rent"
+                type="number"
+                placeholder="e.g. 3500000"
+                value={form.price}
+                onChange={(e) => update("price", e.target.value)}
+              />
+              <Input
+                label="Caution Fee"
+                type="number"
+                placeholder="e.g. 3500000"
+                value={form.cautionFee}
+                onChange={(e) => update("cautionFee", e.target.value)}
+              />
+              <Input
+                label="Service Charge"
+                type="number"
+                placeholder="e.g. 1500000"
+                value={form.serviceCharge}
+                onChange={(e) => update("serviceCharge", e.target.value)}
+              />
+              <Input
+                label="Agent Fee"
+                type="number"
+                placeholder="e.g. 350000"
+                value={form.agentFee}
+                onChange={(e) => update("agentFee", e.target.value)}
+              />
+            </div>
+          )}
+
+          {/* Step 4: Features */}
+          {step === 3 && (
+            <div className="space-y-6">
+              <div className="grid grid-cols-3 gap-4">
+                <Input
+                  label="Bedrooms"
+                  type="number"
+                  placeholder="0"
+                  value={form.bedrooms}
+                  onChange={(e) => update("bedrooms", e.target.value)}
+                />
+                <Input
+                  label="Bathrooms"
+                  type="number"
+                  placeholder="0"
+                  value={form.bathrooms}
+                  onChange={(e) => update("bathrooms", e.target.value)}
+                />
+                <Input
+                  label="Toilets"
+                  type="number"
+                  placeholder="0"
+                  value={form.toilets}
+                  onChange={(e) => update("toilets", e.target.value)}
+                />
+              </div>
+              <div>
+                <p className="mb-3 text-sm font-medium text-foreground">Amenities</p>
+                <div className="grid grid-cols-2 gap-2">
+                  {AMENITIES.map((amenity) => (
+                    <Checkbox
+                      key={amenity}
+                      label={amenity}
+                      checked={form.amenities.includes(amenity)}
+                      onCheckedChange={() => toggleAmenity(amenity)}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Step 5: Photos */}
+          {step === 4 && (
+            <FileUpload
+              label="Property Photos"
+              multiple
+              maxFiles={10}
+              onChange={(files) => update("photos", files)}
+            />
+          )}
+
+          {/* Step 6: Review */}
+          {step === 5 && (
+            <div className="space-y-4">
+              <h2 className="font-display text-lg text-foreground">Review Your Listing</h2>
+              <div className="space-y-3 text-sm">
+                <div className="flex justify-between border-b border-black/5 pb-2">
+                  <span className="text-muted">Type</span>
+                  <span className="font-medium text-foreground">{form.type || "---"}</span>
+                </div>
+                <div className="flex justify-between border-b border-black/5 pb-2">
+                  <span className="text-muted">Title</span>
+                  <span className="font-medium text-foreground">{form.title || "---"}</span>
+                </div>
+                <div className="flex justify-between border-b border-black/5 pb-2">
+                  <span className="text-muted">Location</span>
+                  <span className="font-medium text-foreground">
+                    {form.area ? `${form.area}, ` : ""}{form.city}, {form.state}
+                  </span>
+                </div>
+                <div className="flex justify-between border-b border-black/5 pb-2">
+                  <span className="text-muted">Rent</span>
+                  <span className="font-medium text-foreground">
+                    {form.price ? formatNaira(Number(form.price)) : "---"}
+                  </span>
+                </div>
+                <div className="flex justify-between border-b border-black/5 pb-2">
+                  <span className="text-muted">Bedrooms / Bathrooms</span>
+                  <span className="font-medium text-foreground">
+                    {form.bedrooms || 0} / {form.bathrooms || 0}
+                  </span>
+                </div>
+                <div className="flex justify-between border-b border-black/5 pb-2">
+                  <span className="text-muted">Amenities</span>
+                  <span className="font-medium text-foreground">
+                    {form.amenities.length} selected
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted">Photos</span>
+                  <span className="font-medium text-foreground">
+                    {form.photos.length} uploaded
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Navigation */}
+      <div className="flex items-center justify-between">
+        <Button
+          variant="secondary"
+          onClick={() => setStep((s) => s - 1)}
+          disabled={step === 0}
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back
+        </Button>
+        {step < STEPS.length - 1 ? (
+          <Button variant="primary" onClick={() => setStep((s) => s + 1)}>
+            Next
+            <ArrowRight className="h-4 w-4" />
+          </Button>
+        ) : (
+          <Button variant="accent">
+            <Check className="h-4 w-4" />
+            Submit Listing
+          </Button>
+        )}
+      </div>
+    </div>
+  );
+}
