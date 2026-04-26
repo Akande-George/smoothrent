@@ -18,7 +18,13 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Modal, ModalContent } from "@/components/ui/modal";
 import { Textarea } from "@/components/ui/textarea";
-import { mockApplications, mockProperties, mockUsers } from "@/lib/mock-data";
+import { TenantReviewsCard } from "@/components/property/tenant-reviews-card";
+import {
+  mockApplications,
+  mockProperties,
+  mockTenantReviews,
+  mockUsers,
+} from "@/lib/mock-data";
 import { formatDate, formatNaira, rentSuffix } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import type { PropertyApplication } from "@/types/property";
@@ -241,11 +247,16 @@ export default function ApplicationsPage() {
             const canDecide =
               app.status === "submitted" || app.status === "under_review";
 
+            const tenantReviews = mockTenantReviews.filter(
+              (r) => r.tenantId === app.tenantId
+            );
+            const landlord = mockUsers.find((u) => u.id === LANDLORD_ID);
             return (
               <article
                 key={app.id}
-                className="grid gap-5 rounded-2xl border border-line bg-paper p-5 transition hover:border-emerald/40 lg:grid-cols-[2fr_1.4fr_auto]"
+                className="space-y-5 rounded-2xl border border-line bg-paper p-5 transition hover:border-emerald/40"
               >
+                <div className="grid gap-5 lg:grid-cols-[2fr_1.4fr_auto]">
                 <div className="flex items-start gap-4">
                   <Avatar fallback={initials} size="lg" />
                   <div className="min-w-0 flex-1">
@@ -385,6 +396,21 @@ export default function ApplicationsPage() {
                     </p>
                   )}
                 </div>
+                </div>
+                <TenantReviewsCard
+                  tenantId={app.tenantId}
+                  tenantName={app.tenantName}
+                  reviewerId={LANDLORD_ID}
+                  reviewerName={
+                    landlord
+                      ? `${landlord.firstName} ${landlord.lastName}`
+                      : "Landlord"
+                  }
+                  reviewerRole="landlord"
+                  propertyId={property?.id}
+                  propertyTitle={property?.title}
+                  initialReviews={tenantReviews}
+                />
               </article>
             );
           })}

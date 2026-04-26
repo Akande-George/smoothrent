@@ -47,6 +47,7 @@ const CATEGORY_GRADIENT: Record<string, string> = {
   chef: "from-clay via-saffron to-emerald-deep",
   security: "from-emerald-deep via-emerald to-clay/30",
   errand: "from-saffron via-emerald-soft to-clay/30",
+  insurance: "from-emerald-deep via-saffron/40 to-emerald",
 };
 
 const STATUS_VARIANT: Record<ServiceRequestStatus, "success" | "info" | "warning" | "default" | "danger"> = {

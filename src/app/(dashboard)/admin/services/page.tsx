@@ -40,6 +40,7 @@ const CATEGORY_OPTIONS: { label: string; value: ServiceCategory }[] = [
   { label: "Private chef", value: "chef" },
   { label: "Security", value: "security" },
   { label: "Errand", value: "errand" },
+  { label: "Insurance", value: "insurance" },
 ];
 
 const UNIT_OPTIONS: { label: string; value: ServiceCatalogItem["unit"] }[] = [
@@ -47,6 +48,8 @@ const UNIT_OPTIONS: { label: string; value: ServiceCatalogItem["unit"] }[] = [
   { label: "Per kg", value: "per kg" },
   { label: "Per hour", value: "per hour" },
   { label: "Per day", value: "per day" },
+  { label: "Per month", value: "per month" },
+  { label: "Per year", value: "per year" },
 ];
 
 const ALL_FREQUENCIES: ServiceFrequency[] = [
@@ -68,6 +71,7 @@ const CATEGORY_GRADIENT: Record<string, string> = {
   chef: "from-clay via-saffron to-emerald-deep",
   security: "from-emerald-deep via-emerald to-clay/30",
   errand: "from-saffron via-emerald-soft to-clay/30",
+  insurance: "from-emerald-deep via-saffron/40 to-emerald",
 };
 
 const EMPTY_SERVICE: ServiceCatalogItem = {

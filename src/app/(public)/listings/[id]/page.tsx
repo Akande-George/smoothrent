@@ -16,7 +16,8 @@ import { PropertyGallery } from "@/components/property/property-gallery";
 import { PropertyDetails } from "@/components/property/property-details";
 import { PropertyGrid } from "@/components/property/property-grid";
 import { PropertyActions } from "@/components/property/property-actions";
-import { mockProperties, mockUsers } from "@/lib/mock-data";
+import { PropertyReviews } from "@/components/property/property-reviews";
+import { mockProperties, mockPropertyReviews, mockUsers } from "@/lib/mock-data";
 
 export default async function PropertyDetailPage({
   params,
@@ -31,6 +32,7 @@ export default async function PropertyDetailPage({
   const similar = mockProperties
     .filter((p) => p.id !== property.id && p.city === property.city)
     .slice(0, 3);
+  const reviews = mockPropertyReviews.filter((r) => r.propertyId === property.id);
 
   const formatNGN = (n: number) =>
     new Intl.NumberFormat("en-NG", {
@@ -94,6 +96,7 @@ export default async function PropertyDetailPage({
         <div className="space-y-8">
           <PropertyGallery images={property.images} />
           <PropertyDetails property={property} />
+          <PropertyReviews propertyId={property.id} initialReviews={reviews} />
         </div>
 
         <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">

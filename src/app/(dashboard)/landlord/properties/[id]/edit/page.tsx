@@ -40,6 +40,7 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
     bedrooms: property?.bedrooms?.toString() || "",
     bathrooms: property?.bathrooms?.toString() || "",
     toilets: property?.toilets?.toString() || "",
+    powerSupplyHours: property?.powerSupplyHours?.toString() || "",
     amenities: property?.amenities || ([] as string[]),
   });
 
@@ -231,6 +232,15 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
                 onChange={(e) => update("toilets", e.target.value)}
               />
             </div>
+            <Input
+              label="Average power supply (hours / day)"
+              type="number"
+              min={0}
+              max={24}
+              hint="Honest estimate over a typical week"
+              value={form.powerSupplyHours}
+              onChange={(e) => update("powerSupplyHours", e.target.value)}
+            />
             <div>
               <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.28em] text-muted-strong">
                 Amenities

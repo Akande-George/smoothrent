@@ -70,6 +70,7 @@ export default function NewAgentListingPage() {
     bedrooms: "",
     bathrooms: "",
     toilets: "",
+    powerSupplyHours: "",
     amenities: [] as string[],
     photos: [] as File[],
   });
@@ -361,6 +362,16 @@ export default function NewAgentListingPage() {
                   onChange={(e) => update("toilets", e.target.value)}
                 />
               </div>
+              <Input
+                label="Average power supply (hours / day)"
+                type="number"
+                min={0}
+                max={24}
+                placeholder="e.g. 18"
+                hint="Honest estimate over a typical week"
+                value={form.powerSupplyHours}
+                onChange={(e) => update("powerSupplyHours", e.target.value)}
+              />
               <div>
                 <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.28em] text-muted-strong">
                   Amenities
@@ -421,6 +432,12 @@ export default function NewAgentListingPage() {
                       : "—",
                   ],
                   ["Bedrooms / Baths", `${form.bedrooms || 0} / ${form.bathrooms || 0}`],
+                  [
+                    "Power supply",
+                    form.powerSupplyHours
+                      ? `${form.powerSupplyHours} hrs / day`
+                      : "—",
+                  ],
                   ["Amenities", `${form.amenities.length} selected`],
                   ["Photos", `${form.photos.length} uploaded`],
                 ].map(([label, value]) => (

@@ -1,5 +1,10 @@
 import type { User } from "@/types/user";
-import type { Property, PropertyApplication } from "@/types/property";
+import type {
+  Property,
+  PropertyApplication,
+  PropertyReview,
+  TenantReview,
+} from "@/types/property";
 import type { Lease } from "@/types/lease";
 import type { Payment } from "@/types/payment";
 import type { MaintenanceRequest } from "@/types/maintenance";
@@ -117,6 +122,7 @@ export const mockProperties: Property[] = [
     bathrooms: 3,
     toilets: 4,
     sqft: 1800,
+    powerSupplyHours: 22,
     amenities: ["24/7 Power Supply", "Running Water", "Security", "Parking Space", "Swimming Pool", "Gym"],
     images: [],
     state: "Lagos",
@@ -147,6 +153,7 @@ export const mockProperties: Property[] = [
     bathrooms: 4,
     toilets: 5,
     sqft: 3200,
+    powerSupplyHours: 24,
     amenities: ["24/7 Power Supply", "Security", "Parking Space", "Boys Quarters (BQ)", "Generator", "Gate House"],
     images: [],
     state: "FCT Abuja",
@@ -175,6 +182,7 @@ export const mockProperties: Property[] = [
     bedrooms: 1,
     bathrooms: 1,
     toilets: 1,
+    powerSupplyHours: 14,
     amenities: ["Prepaid Meter", "Tiled Floor", "POP Ceiling"],
     images: [],
     state: "Lagos",
@@ -204,6 +212,7 @@ export const mockProperties: Property[] = [
     bedrooms: 2,
     bathrooms: 2,
     toilets: 3,
+    powerSupplyHours: 20,
     amenities: ["24/7 Power Supply", "Security", "Parking Space", "Generator", "Running Water"],
     images: [],
     state: "Rivers",
@@ -233,6 +242,7 @@ export const mockProperties: Property[] = [
     bathrooms: 3,
     toilets: 4,
     sqft: 2800,
+    powerSupplyHours: 24,
     amenities: ["24/7 Power Supply", "Swimming Pool", "Gym", "Security", "Parking Space", "CCTV", "Serviced"],
     images: [],
     state: "Lagos",
@@ -263,6 +273,7 @@ export const mockProperties: Property[] = [
     bathrooms: 4,
     toilets: 6,
     sqft: 5000,
+    powerSupplyHours: 24,
     amenities: ["24/7 Power Supply", "Generator", "Parking Space", "Security"],
     images: [],
     state: "Lagos",
@@ -291,6 +302,7 @@ export const mockProperties: Property[] = [
     bedrooms: 1,
     bathrooms: 1,
     toilets: 1,
+    powerSupplyHours: 12,
     amenities: ["Prepaid Meter", "Tiled Floor", "Wardrobes"],
     images: [],
     state: "Lagos",
@@ -319,6 +331,7 @@ export const mockProperties: Property[] = [
     bedrooms: 3,
     bathrooms: 3,
     toilets: 4,
+    powerSupplyHours: 18,
     amenities: ["Security", "Parking Space", "Children Playground", "Newly Built"],
     images: [],
     state: "FCT Abuja",
@@ -579,6 +592,122 @@ export const mockActivity: ActivityItem[] = [
   { id: "a4", type: "lease", title: "Lease signed", description: "Lease signed for 3 Bedroom Flat in Lekki Phase 1", timestamp: "2026-02-28T16:45:00" },
   { id: "a5", type: "listing", title: "New listing", description: "Penthouse in Victoria Island listed by Aisha Abdullahi", timestamp: "2026-03-01T11:00:00" },
   { id: "a6", type: "review", title: "New review", description: "Chinedu rated Lekki Phase 1 property 4.5 stars", timestamp: "2026-03-12T08:15:00" },
+];
+
+// ── Property Reviews (tenants reviewing properties) ────
+export const mockPropertyReviews: PropertyReview[] = [
+  {
+    id: "pr1",
+    propertyId: "p1",
+    tenantId: "u1",
+    tenantName: "Chinedu Okafor",
+    rating: 4.5,
+    title: "Genuinely a peaceful home",
+    comment:
+      "Lived here for 9 months. Power supply is honest — they advertised 22 hours and that's roughly what we get. Security is tight, the swimming pool is well kept. Only gripe: parking gets crowded on weekends.",
+    stayLength: "9 months",
+    createdAt: "2026-03-12",
+  },
+  {
+    id: "pr2",
+    propertyId: "p1",
+    tenantId: "u5",
+    tenantName: "Oluwaseun Adeyemi",
+    rating: 4,
+    title: "Worth the price tag",
+    comment:
+      "Beautiful finishings and the gym is a nice touch. Internet in the area is solid. Service charge response time could be quicker.",
+    stayLength: "6 months",
+    createdAt: "2026-02-04",
+  },
+  {
+    id: "pr3",
+    propertyId: "p3",
+    tenantId: "u1",
+    tenantName: "Chinedu Okafor",
+    rating: 3.5,
+    title: "Decent for the price",
+    comment:
+      "Self-contain in Yaba, what you'd expect. Power is there about 14 hours daily as listed, no surprises. Landlord is responsive.",
+    stayLength: "1 year",
+    createdAt: "2026-01-22",
+  },
+  {
+    id: "pr4",
+    propertyId: "p2",
+    tenantId: "u5",
+    tenantName: "Oluwaseun Adeyemi",
+    rating: 5,
+    title: "Maitama at its finest",
+    comment:
+      "Power runs 24/7 between mains and inverter. Quiet street, easy access to embassies. Highly recommend if it's within budget.",
+    stayLength: "2 years",
+    createdAt: "2026-02-28",
+  },
+  {
+    id: "pr5",
+    propertyId: "p4",
+    tenantId: "u1",
+    tenantName: "Chinedu Okafor",
+    rating: 4,
+    title: "Solid GRA flat",
+    comment:
+      "Generator kicks in promptly when NEPA goes off. Estate is secure. Water pressure can drop in the dry season.",
+    stayLength: "8 months",
+    createdAt: "2026-03-01",
+  },
+];
+
+// ── Tenant Reviews (landlords/agents reviewing tenants) ─
+export const mockTenantReviews: TenantReview[] = [
+  {
+    id: "tr1",
+    tenantId: "u1",
+    tenantName: "Chinedu Okafor",
+    reviewerId: "u2",
+    reviewerName: "Aisha Abdullahi",
+    reviewerRole: "landlord",
+    propertyId: "p1",
+    propertyTitle: "Luxury 3 Bedroom Flat in Lekki Phase 1",
+    rating: 5,
+    comment:
+      "One of the easiest tenants I've had. Pays rent before the due date, takes care of the apartment, and communicates clearly. Would lease to him again.",
+    paymentTimeliness: "excellent",
+    propertyCare: "excellent",
+    createdAt: "2026-03-05",
+  },
+  {
+    id: "tr2",
+    tenantId: "u1",
+    tenantName: "Chinedu Okafor",
+    reviewerId: "u3",
+    reviewerName: "Emeka Nwosu",
+    reviewerRole: "agent",
+    propertyId: "p1",
+    propertyTitle: "Luxury 3 Bedroom Flat in Lekki Phase 1",
+    rating: 4.5,
+    comment:
+      "Smooth onboarding. Showed up to inspection on time, asked the right questions, and the deal closed within a week.",
+    paymentTimeliness: "excellent",
+    propertyCare: "good",
+    createdAt: "2026-02-26",
+  },
+  {
+    id: "tr3",
+    tenantId: "u5",
+    tenantName: "Oluwaseun Adeyemi",
+    reviewerId: "u6",
+    reviewerName: "Amaka Eze",
+    reviewerRole: "landlord",
+    propertyId: "p7",
+    propertyTitle: "Mini Flat in Surulere",
+    rating: 3.5,
+    comment:
+      "Generally fine — keeps the place neat. Rent has been late twice in the last twelve months but always settled within the grace window.",
+    paymentTimeliness: "fair",
+    propertyCare: "good",
+    createdAt: "2026-03-10",
+  },
 ];
 
 // ── Agent Deals ────────────────────────────────────────

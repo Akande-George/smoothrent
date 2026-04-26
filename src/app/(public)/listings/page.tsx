@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowUpRight, MapPin, ShieldCheck, Sparkles, Bed, Bath, Maximize } from "lucide-react";
 import { PropertyFilters } from "@/components/property/property-filters";
 import { PropertyGrid } from "@/components/property/property-grid";
+import { AIRecommender } from "@/components/property/ai-recommender";
 import { mockProperties } from "@/lib/mock-data";
 import { formatNaira, rentLabel, rentSuffix } from "@/lib/format";
 
@@ -30,9 +31,12 @@ export default function ListingsPage() {
               transparently priced.
             </p>
           </div>
-          <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-muted-strong">
-            <span className="inline-flex h-2 w-2 animate-pulse rounded-full bg-saffron" />
-            Updated 4 minutes ago
+          <div className="flex flex-col items-start gap-3 sm:items-end">
+            <AIRecommender />
+            <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-muted-strong">
+              <span className="inline-flex h-2 w-2 animate-pulse rounded-full bg-saffron" />
+              Updated 4 minutes ago
+            </div>
           </div>
         </div>
       </section>

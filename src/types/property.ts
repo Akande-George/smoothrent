@@ -14,6 +14,7 @@ export interface Property {
   bathrooms: number;
   toilets: number;
   sqft?: number;
+  powerSupplyHours?: number;
   amenities: Amenity[];
   images: string[];
   videoUrl?: string;
@@ -42,4 +43,32 @@ export interface PropertyApplication {
   submittedAt: string;
   reviewedAt?: string;
   notes?: string;
+}
+
+export interface PropertyReview {
+  id: string;
+  propertyId: string;
+  tenantId: string;
+  tenantName: string;
+  rating: number;
+  title: string;
+  comment: string;
+  stayLength?: string;
+  createdAt: string;
+}
+
+export interface TenantReview {
+  id: string;
+  tenantId: string;
+  tenantName: string;
+  reviewerId: string;
+  reviewerName: string;
+  reviewerRole: "landlord" | "agent";
+  propertyId?: string;
+  propertyTitle?: string;
+  rating: number;
+  comment: string;
+  paymentTimeliness?: "excellent" | "good" | "fair" | "poor";
+  propertyCare?: "excellent" | "good" | "fair" | "poor";
+  createdAt: string;
 }

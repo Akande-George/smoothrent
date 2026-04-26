@@ -24,6 +24,7 @@ import {
   PanelLeftOpen,
   Bell,
   Sparkles,
+  Coins,
 } from "lucide-react";
 import type { UserRole } from "@/types/user";
 import { SidebarItem } from "./sidebar-item";
@@ -38,6 +39,7 @@ const navConfig: Record<UserRole, { href: string; icon: React.ComponentType<{ cl
     { href: "/customer/payments", icon: CreditCard, label: "Payments" },
     { href: "/customer/leases", icon: ScrollText, label: "Leases" },
     { href: "/customer/services", icon: Sparkles, label: "Services" },
+    { href: "/customer/loans", icon: Coins, label: "Rental loans" },
     { href: "/customer/maintenance", icon: Wrench, label: "Maintenance" },
     { href: "/customer/referrals", icon: Handshake, label: "Referrals" },
     { href: "/customer/notifications", icon: Bell, label: "Notifications" },

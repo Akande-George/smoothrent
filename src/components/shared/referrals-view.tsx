@@ -34,6 +34,7 @@ interface RoleCopy {
   subhead: string;
   rewardCopy: string;
   rewardAmount: number;
+  eligibleTargets: { kind: ReferralRecord["category"]; label: string; reward: number; helper: string }[];
   records: ReferralRecord[];
   highlights: { label: string; value: string }[];
 }
@@ -41,57 +42,69 @@ interface RoleCopy {
 const PER_ROLE: Record<UserRole, RoleCopy> = {
   customer: {
     eyebrow: "Tenant rewards",
-    headline: "Refer a renter, earn ₦5,000.",
+    headline: "Refer anyone — tenants, landlords, agents.",
     subhead:
-      "Every friend who signs their first SmoothRent lease puts ₦5,000 in your wallet — applied to your next rent.",
-    rewardCopy: "₦5,000 per signed lease",
-    rewardAmount: 5_000,
+      "Tenants can refer the whole ecosystem. Pull friends onto SmoothRent and earn rewards every time one of them takes their first verified action.",
+    rewardCopy: "Up to ₦15,000 per successful referral",
+    rewardAmount: 15_000,
+    eligibleTargets: [
+      { kind: "tenant", label: "Refer a tenant", reward: 5_000, helper: "Earn when they sign their first lease." },
+      { kind: "landlord", label: "Refer a landlord", reward: 15_000, helper: "Earn when their first listing is leased." },
+      { kind: "agent", label: "Refer an agent", reward: 10_000, helper: "Earn when they close their first deal." },
+    ],
     records: [
-      { id: "rc1", name: "Tobi Adekunle", status: "completed", date: "2026-02-15", reward: 5_000, category: "tenant" },
-      { id: "rc2", name: "Ngozi Uche", status: "pending", date: "2026-03-10", reward: 5_000, category: "tenant" },
-      { id: "rc3", name: "Yusuf Danjuma", status: "completed", date: "2026-01-20", reward: 5_000, category: "tenant" },
+      { id: "rc1", name: "Tobi Adekunle — Tenant", status: "completed", date: "2026-02-15", reward: 5_000, category: "tenant" },
+      { id: "rc2", name: "Ngozi Uche — Tenant", status: "pending", date: "2026-03-10", reward: 5_000, category: "tenant" },
+      { id: "rc3", name: "Yusuf Danjuma — Tenant", status: "completed", date: "2026-01-20", reward: 5_000, category: "tenant" },
+      { id: "rc4", name: "Halima Bashir — Landlord", status: "pending", date: "2026-03-22", reward: 15_000, category: "landlord" },
     ],
     highlights: [
-      { label: "Total referrals", value: "3" },
+      { label: "Total referrals", value: "4" },
       { label: "Successful", value: "2" },
       { label: "Earned", value: formatNaira(10_000) },
     ],
   },
   landlord: {
     eyebrow: "Landlord rewards",
-    headline: "Refer a property owner, earn ₦15,000.",
+    headline: "Refer fellow landlords or agents.",
     subhead:
-      "Bring another landlord on the platform. When they list and lease their first property, you earn ₦15,000.",
-    rewardCopy: "₦15,000 per first listing leased",
+      "Landlords can refer other landlords and agents to the platform — strengthen the supply side and earn alongside it.",
+    rewardCopy: "Up to ₦15,000 per successful referral",
     rewardAmount: 15_000,
+    eligibleTargets: [
+      { kind: "landlord", label: "Refer a landlord", reward: 15_000, helper: "Earn when their first listing is leased." },
+      { kind: "agent", label: "Refer an agent", reward: 10_000, helper: "Earn when they close their first deal." },
+    ],
     records: [
-      { id: "rl1", name: "Olubunmi Fadeyi", status: "completed", date: "2026-02-22", reward: 15_000, category: "landlord" },
-      { id: "rl2", name: "Halima Yakubu", status: "pending", date: "2026-03-15", reward: 15_000, category: "landlord" },
-      { id: "rl3", name: "Patricia Okeke", status: "completed", date: "2026-01-30", reward: 15_000, category: "landlord" },
+      { id: "rl1", name: "Olubunmi Fadeyi — Landlord", status: "completed", date: "2026-02-22", reward: 15_000, category: "landlord" },
+      { id: "rl2", name: "Halima Yakubu — Landlord", status: "pending", date: "2026-03-15", reward: 15_000, category: "landlord" },
+      { id: "rl3", name: "Sandra Eze — Agent", status: "completed", date: "2026-01-30", reward: 10_000, category: "agent" },
     ],
     highlights: [
       { label: "Total referrals", value: "3" },
       { label: "Successful", value: "2" },
-      { label: "Earned", value: formatNaira(30_000) },
+      { label: "Earned", value: formatNaira(25_000) },
     ],
   },
   agent: {
     eyebrow: "Agent rewards",
-    headline: "Refer agents, landlords, or tenants — all earn rewards.",
+    headline: "Refer fellow agents.",
     subhead:
-      "₦10,000 for every fellow agent that closes their first deal · ₦15,000 per landlord · ₦5,000 per tenant.",
-    rewardCopy: "Up to ₦15,000 per successful referral",
-    rewardAmount: 15_000,
+      "Bring more vetted agents onto SmoothRent. ₦10,000 lands in your wallet for every agent who closes their first deal on the platform.",
+    rewardCopy: "₦10,000 per agent who closes",
+    rewardAmount: 10_000,
+    eligibleTargets: [
+      { kind: "agent", label: "Refer an agent", reward: 10_000, helper: "Earn when they close their first deal." },
+    ],
     records: [
       { id: "ra1", name: "Musa Ibrahim — Agent", status: "completed", date: "2026-02-12", reward: 10_000, category: "agent" },
-      { id: "ra2", name: "Funmi Olawale — Tenant", status: "completed", date: "2026-02-28", reward: 5_000, category: "tenant" },
-      { id: "ra3", name: "Ade Bello — Landlord", status: "pending", date: "2026-03-18", reward: 15_000, category: "landlord" },
       { id: "ra4", name: "Sandra Eze — Agent", status: "completed", date: "2026-01-22", reward: 10_000, category: "agent" },
+      { id: "ra5", name: "Tunde Akin — Agent", status: "pending", date: "2026-03-18", reward: 10_000, category: "agent" },
     ],
     highlights: [
-      { label: "Total referrals", value: "4" },
-      { label: "Successful", value: "3" },
-      { label: "Earned", value: formatNaira(25_000) },
+      { label: "Total referrals", value: "3" },
+      { label: "Successful", value: "2" },
+      { label: "Earned", value: formatNaira(20_000) },
     ],
   },
   admin: {
@@ -100,6 +113,11 @@ const PER_ROLE: Record<UserRole, RoleCopy> = {
     subhead: "Monitor referrals across roles and approve withdrawals.",
     rewardCopy: "₦5,000–₦15,000 per qualifying referral",
     rewardAmount: 15_000,
+    eligibleTargets: [
+      { kind: "tenant", label: "Tenant", reward: 5_000, helper: "Tenants referring tenants." },
+      { kind: "landlord", label: "Landlord", reward: 15_000, helper: "Tenant or landlord referrals." },
+      { kind: "agent", label: "Agent", reward: 10_000, helper: "Any role referring agents." },
+    ],
     records: [],
     highlights: [
       { label: "Total payouts (mo)", value: formatNaira(380_000) },

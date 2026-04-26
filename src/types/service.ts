@@ -8,7 +8,8 @@ export type ServiceCategory =
   | "ac_servicing"
   | "chef"
   | "security"
-  | "errand";
+  | "errand"
+  | "insurance";
 
 export type ServiceFrequency =
   | "one_off"
@@ -33,7 +34,13 @@ export interface ServiceCatalogItem {
   tagline: string;
   description: string;
   basePrice: number;
-  unit: "per visit" | "per kg" | "per hour" | "per day";
+  unit:
+    | "per visit"
+    | "per kg"
+    | "per hour"
+    | "per day"
+    | "per month"
+    | "per year";
   durationMinutes: number;
   supportedFrequencies: ServiceFrequency[];
   features: string[];

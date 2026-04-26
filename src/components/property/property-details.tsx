@@ -1,4 +1,4 @@
-import { Bed, Bath, Maximize, Toilet, Check } from "lucide-react";
+import { Bed, Bath, Maximize, Toilet, Check, Zap } from "lucide-react";
 import { Currency } from "@/components/ui/currency";
 import { rentLabel, rentSuffix } from "@/lib/format";
 import type { Property } from "@/types/property";
@@ -18,6 +18,11 @@ export function PropertyDetails({ property }: { property: Property }) {
       icon: Maximize,
       label: "Sq ft",
       value: property.sqft.toLocaleString(),
+    },
+    property.powerSupplyHours !== undefined && {
+      icon: Zap,
+      label: "Power / day",
+      value: `${property.powerSupplyHours} hrs`,
     },
   ].filter(Boolean) as { icon: typeof Bed; label: string; value: string | number }[];
 

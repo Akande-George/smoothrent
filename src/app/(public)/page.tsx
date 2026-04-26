@@ -14,6 +14,7 @@ import {
   Quote,
 } from "lucide-react";
 import { mockProperties } from "@/lib/mock-data";
+import { AIRecommender } from "@/components/property/ai-recommender";
 
 const featured = mockProperties.filter((p) => p.isFeatured).slice(0, 3);
 
@@ -77,6 +78,7 @@ export default function HomePage() {
                 Browse 312 listings
                 <ArrowUpRight className="h-4 w-4" />
               </Link>
+              <AIRecommender className="h-12 px-6 sm:h-13 sm:px-7" />
               <Link
                 href="/register"
                 className="btn-base btn-outline inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-sm sm:h-13 sm:px-7"

@@ -138,6 +138,46 @@ export const DEFAULT_SERVICE_CATALOG: ServiceCatalogItem[] = [
     supportedFrequencies: ["one_off", "weekly", "biweekly"],
     features: ["Hourly billing", "Live location share"],
   },
+  {
+    id: "svc-contents-insurance",
+    name: "Household contents insurance",
+    category: "insurance",
+    tagline: "Cover your TVs, fridge, sofas — up to ₦5M.",
+    description:
+      "Underwritten by Leadway. Covers theft, fire, flood and accidental damage to household electronics, furniture and personal items. Same-day claims via the SmoothRent app.",
+    basePrice: 3500,
+    unit: "per month",
+    durationMinutes: 0,
+    supportedFrequencies: ["monthly"],
+    features: ["Up to ₦5M cover", "Same-day claims", "Underwritten by Leadway"],
+    popular: true,
+  },
+  {
+    id: "svc-tenant-liability",
+    name: "Tenant liability insurance",
+    category: "insurance",
+    tagline: "Sleep easy on the caution fee.",
+    description:
+      "Protects you against accidental damage to the landlord's property — from a burst pipe to a fire. Up to ₦2M cover, replaces the back-and-forth on your refundable caution fee.",
+    basePrice: 2200,
+    unit: "per month",
+    durationMinutes: 0,
+    supportedFrequencies: ["monthly"],
+    features: ["Up to ₦2M cover", "Caution-fee top-up", "Cancel anytime"],
+  },
+  {
+    id: "svc-surge-cover",
+    name: "Appliance surge protection",
+    category: "insurance",
+    tagline: "Replace fried fridges, ACs, TVs.",
+    description:
+      "Covers electrical appliances damaged by power surges or voltage spikes. Pays out within 7 days. Includes one free electrician visit per claim.",
+    basePrice: 1500,
+    unit: "per month",
+    durationMinutes: 0,
+    supportedFrequencies: ["monthly"],
+    features: ["Up to ₦1.5M cover", "7-day payout", "Free electrician visit"],
+  },
 ];
 
 export const FREQUENCY_LABEL: Record<ServiceFrequency, string> = {
