@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { Currency } from "@/components/ui/currency";
 import { StatCard } from "@/components/ui/stat-card";
-import { formatDate } from "@/lib/format";
+import { formatDate, rentLabel, rentSuffix } from "@/lib/format";
 import { mockProperties } from "@/lib/mock-data";
 
 export default async function ListingDetailPage({
@@ -152,45 +152,36 @@ export default async function ListingDetailPage({
           <CardContent>
             <div className="space-y-4">
               <div className="flex justify-between">
-                <span className="text-sm text-muted">Annual Rent</span>
+                <span className="text-sm text-muted">{rentLabel(property.rentType)}</span>
                 <Currency
                   amount={property.price}
+                  suffix={rentSuffix(property.rentType)}
                   className="text-sm font-medium text-foreground"
                 />
               </div>
               <div className="flex justify-between">
-                <span className="text-sm text-muted">Caution Fee</span>
+                <span className="text-sm text-muted">Caution fee</span>
                 <Currency
                   amount={property.cautionFee}
                   className="text-sm font-medium text-foreground"
                 />
               </div>
-              {property.serviceCharge > 0 && (
-                <div className="flex justify-between">
-                  <span className="text-sm text-muted">Service Charge</span>
-                  <Currency
-                    amount={property.serviceCharge}
-                    className="text-sm font-medium text-foreground"
-                  />
-                </div>
-              )}
               <div className="flex justify-between">
-                <span className="text-sm text-muted">Service Fee</span>
+                <span className="text-sm text-muted">Service fee</span>
                 <Currency
                   amount={property.serviceFee}
                   className="text-sm font-medium text-foreground"
                 />
               </div>
-              <div className="border-t border-black/10 pt-4">
+              <div className="border-t border-line pt-4">
                 <div className="flex justify-between">
                   <span className="text-sm font-medium text-foreground">
-                    Total Move-in Cost
+                    Move-in total
                   </span>
                   <Currency
                     amount={
                       property.price +
                       property.cautionFee +
-                      property.serviceCharge +
                       property.serviceFee
                     }
                     className="font-display text-lg text-foreground"

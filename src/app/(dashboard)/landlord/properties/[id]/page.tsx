@@ -79,16 +79,16 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
               </div>
               <div className="flex justify-between border-b border-black/5 pb-2">
                 <span className="text-muted">Rent</span>
-                <Currency amount={property.price} suffix="/yr" className="font-medium" />
+                <Currency amount={property.price} suffix="/mo" className="font-medium" />
               </div>
               <div className="flex justify-between border-b border-black/5 pb-2">
                 <span className="text-muted">Caution Fee</span>
                 <Currency amount={property.cautionFee} className="font-medium" />
               </div>
-              {property.serviceCharge > 0 && (
+              {property.serviceFee > 0 && (
                 <div className="flex justify-between border-b border-black/5 pb-2">
                   <span className="text-muted">Service Charge</span>
-                  <Currency amount={property.serviceCharge} className="font-medium" />
+                  <Currency amount={property.serviceFee} className="font-medium" />
                 </div>
               )}
               <div className="flex items-center gap-6 pt-2">

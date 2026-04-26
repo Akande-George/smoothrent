@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
-import { formatNaira } from "@/lib/format";
+import { formatNaira, rentSuffix } from "@/lib/format";
 import type { Property } from "@/types/property";
 
 const employmentOptions = [
@@ -67,8 +67,7 @@ export function ApplyNowModal({ open, onOpenChange, property }: ApplyNowModalPro
     setErrors((p) => ({ ...p, [key]: undefined }));
   };
 
-  const total =
-    property.price + property.cautionFee + property.serviceCharge + property.serviceFee;
+  const total = property.price + property.cautionFee + property.serviceFee;
 
   const validate = () => {
     const next: Partial<Record<string, string>> = {};
@@ -119,7 +118,7 @@ export function ApplyNowModal({ open, onOpenChange, property }: ApplyNowModalPro
         description={
           step === "submitted"
             ? "We've routed your application to the landlord. You'll hear back within 48 hours."
-            : `Submit once, reuse everywhere. Move-in cost: ${formatNaira(total)} (${formatNaira(property.serviceFee)} service fee).`
+            : `Move-in cost: ${formatNaira(total)} (${formatNaira(property.price)}${rentSuffix(property.rentType)} + caution + ${formatNaira(property.serviceFee)} service fee).`
         }
         className="max-w-xl"
       >
@@ -171,7 +170,7 @@ export function ApplyNowModal({ open, onOpenChange, property }: ApplyNowModalPro
                 id="email"
                 label="Email"
                 type="email"
-                placeholder="you@smoothrent.ng"
+                placeholder="you@smoothrent.io"
                 value={form.email}
                 error={errors.email}
                 onChange={(e) => update("email", e.target.value)}

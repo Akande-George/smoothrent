@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight, Bath, Bed, Maximize, ShieldCheck } from "lucide-react";
-import { formatNaira } from "@/lib/format";
+import { formatNaira, rentLabel, rentSuffix } from "@/lib/format";
 import type { Property } from "@/types/property";
 
 const GRADIENTS = [
@@ -100,10 +100,13 @@ export function PropertyCard({
         <div className="mt-auto flex items-end justify-between border-t border-line pt-4">
           <div>
             <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted">
-              {property.rentType === "Per Event" ? "Per event" : "Annual rent"}
+              {rentLabel(property.rentType)}
             </p>
             <p className="font-display text-2xl text-foreground">
               {formatNaira(property.price)}
+              <span className="ml-0.5 text-sm text-muted">
+                {rentSuffix(property.rentType)}
+              </span>
             </p>
           </div>
           <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-emerald text-ivory transition group-hover:bg-saffron group-hover:text-emerald-deep">

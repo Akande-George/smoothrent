@@ -18,8 +18,8 @@ const contacts = [
   {
     icon: Mail,
     label: "Email",
-    value: "hello@smoothrent.ng",
-    href: "mailto:hello@smoothrent.ng",
+    value: "hello@smoothrent.io",
+    href: "mailto:hello@smoothrent.io",
   },
   {
     icon: Phone,
@@ -129,7 +129,7 @@ export default function ContactPage() {
                   id="email"
                   label="Email"
                   type="email"
-                  placeholder="you@smoothrent.ng"
+                  placeholder="you@smoothrent.io"
                   value={form.email}
                   onChange={(e) => update("email", e.target.value)}
                 />

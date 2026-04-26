@@ -5,7 +5,7 @@ import { ArrowUpRight, MapPin, ShieldCheck, Sparkles, Bed, Bath, Maximize } from
 import { PropertyFilters } from "@/components/property/property-filters";
 import { PropertyGrid } from "@/components/property/property-grid";
 import { mockProperties } from "@/lib/mock-data";
-import { formatNaira } from "@/lib/format";
+import { formatNaira, rentLabel, rentSuffix } from "@/lib/format";
 
 export default function ListingsPage() {
   const availableProperties = mockProperties.filter((p) => p.status === "Available");
@@ -109,10 +109,13 @@ export default function ListingsPage() {
               <div className="mt-auto flex flex-wrap items-end justify-between gap-3 border-t border-line pt-5">
                 <div>
                   <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted">
-                    {hero.rentType === "Per Event" ? "Per event" : "Annual rent"}
+                    {rentLabel(hero.rentType)}
                   </p>
                   <p className="font-display text-3xl text-foreground sm:text-4xl">
                     {formatNaira(hero.price)}
+                    <span className="ml-1 text-base text-muted">
+                      {rentSuffix(hero.rentType)}
+                    </span>
                   </p>
                 </div>
                 <span className="btn-base btn-emerald inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm transition group-hover:bg-saffron group-hover:text-emerald-deep">

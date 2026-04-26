@@ -10,7 +10,7 @@ import { formatDate } from "@/lib/format";
 import { mockPayments } from "@/lib/mock-data";
 import type { Payment } from "@/types/payment";
 
-const commissions = mockPayments.filter((p) => p.type === "agent_commission");
+const commissions = mockPayments.filter((p) => p.type === "referral_reward");
 const totalEarned = commissions
   .filter((p) => p.status === "paid")
   .reduce((sum, p) => sum + p.amount, 0);

@@ -21,7 +21,7 @@ const faqs = [
   {
     cat: "fees",
     q: "What fees does SmoothRent charge tenants?",
-    a: "SmoothRent is free for tenants to browse and apply. You only pay your standard rent components — annual rent, refundable caution fee, service charge, and a transparent service fee set per listing — all displayed up-front.",
+    a: "SmoothRent is free for tenants to browse and apply. You only pay your standard rent components — monthly rent, a refundable caution fee, and a transparent service fee — all displayed up-front before you apply.",
   },
   {
     cat: "trust",

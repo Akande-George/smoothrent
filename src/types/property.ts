@@ -9,7 +9,6 @@ export interface Property {
   rentType: RentType;
   price: number;
   cautionFee: number;
-  serviceCharge: number;
   serviceFee: number;
   bedrooms: number;
   bathrooms: number;

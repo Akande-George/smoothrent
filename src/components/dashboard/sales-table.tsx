@@ -15,7 +15,7 @@ const salesData = [
   { id: "s1", name: "Chinedu Okafor", email: "chinedu@gmail.com", type: "Rent", amount: 3_500_000, status: "paid" },
   { id: "s2", name: "Oluwaseun Adeyemi", email: "seun@gmail.com", type: "Rent", amount: 600_000, status: "Pending" },
   { id: "s3", name: "Emeka Nwosu", email: "emeka@gmail.com", type: "Sale", amount: 15_000_000, status: "paid" },
-  { id: "s4", name: "Fatima Bello", email: "fatima@smoothrent.ng", type: "Rent", amount: 4_000_000, status: "paid" },
+  { id: "s4", name: "Fatima Bello", email: "fatima@smoothrent.io", type: "Rent", amount: 4_000_000, status: "paid" },
   { id: "s5", name: "Ibrahim Musa", email: "ibrahim@gmail.com", type: "Rent", amount: 1_200_000, status: "Pending" },
 ];
 

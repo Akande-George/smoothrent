@@ -33,3 +33,29 @@ export function formatCompactNumber(num: number): string {
   if (num >= 1_000) return `${(num / 1_000).toFixed(0)}K`;
   return num.toString();
 }
+
+export type RentTypeLike = "Monthly" | "Daily" | "Per Event" | string;
+
+export function rentSuffix(rentType?: RentTypeLike): string {
+  switch (rentType) {
+    case "Daily":
+      return "/day";
+    case "Per Event":
+      return "/event";
+    case "Monthly":
+    default:
+      return "/mo";
+  }
+}
+
+export function rentLabel(rentType?: RentTypeLike): string {
+  switch (rentType) {
+    case "Daily":
+      return "Daily rent";
+    case "Per Event":
+      return "Per event";
+    case "Monthly":
+    default:
+      return "Monthly rent";
+  }
+}

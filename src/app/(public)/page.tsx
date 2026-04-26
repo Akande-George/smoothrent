@@ -170,10 +170,11 @@ export default function HomePage() {
                 <div className="flex items-end justify-between border-t border-line pt-4">
                   <div>
                     <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted">
-                      Annual rent
+                      Monthly rent
                     </p>
                     <p className="font-display text-3xl text-foreground">
-                      ₦15,000,000
+                      ₦1,250,000
+                      <span className="ml-1 text-base text-muted">/mo</span>
                     </p>
                   </div>
                   <Link
@@ -429,10 +430,13 @@ export default function HomePage() {
                 <div className="mt-auto flex items-end justify-between border-t border-line pt-4">
                   <div>
                     <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted">
-                      Annual rent
+                      {p.rentType === "Per Event" ? "Per event" : p.rentType === "Daily" ? "Daily rent" : "Monthly rent"}
                     </p>
                     <p className="font-display text-2xl text-foreground">
                       {formatNGN(p.price)}
+                      <span className="ml-1 text-sm text-muted">
+                        {p.rentType === "Per Event" ? "/event" : p.rentType === "Daily" ? "/day" : "/mo"}
+                      </span>
                     </p>
                   </div>
                   <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-emerald text-ivory transition group-hover:bg-saffron group-hover:text-emerald-deep">
@@ -487,7 +491,7 @@ export default function HomePage() {
             {
               num: "04",
               title: "Pay rent in escrow. Maintenance in app.",
-              text: "Paystack-powered escrow, scheduled service charges, and one-tap maintenance tickets with photo evidence.",
+              text: "Paystack-powered escrow, scheduled service-fee debits, and one-tap maintenance tickets with photo evidence.",
               icon: Wrench,
             },
           ].map((step, i) => (

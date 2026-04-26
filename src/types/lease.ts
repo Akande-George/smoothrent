@@ -14,7 +14,7 @@ export interface Lease {
   endDate: string;
   rentAmount: number;
   cautionFee: number;
-  serviceCharge: number;
+  serviceFee: number;
   isSigned: boolean;
   signedAt?: string;
   createdAt: string;

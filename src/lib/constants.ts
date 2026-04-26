@@ -34,12 +34,12 @@ export const PROPERTY_TYPES = [
 ] as const;
 
 export const PRICE_RANGES = [
-  { label: "Under ₦500,000/yr", min: 0, max: 500_000 },
-  { label: "₦500K - ₦1M/yr", min: 500_000, max: 1_000_000 },
-  { label: "₦1M - ₦3M/yr", min: 1_000_000, max: 3_000_000 },
-  { label: "₦3M - ₦5M/yr", min: 3_000_000, max: 5_000_000 },
-  { label: "₦5M - ₦10M/yr", min: 5_000_000, max: 10_000_000 },
-  { label: "₦10M+/yr", min: 10_000_000, max: Infinity },
+  { label: "Under ₦50,000/mo", min: 0, max: 50_000 },
+  { label: "₦50K - ₦150K/mo", min: 50_000, max: 150_000 },
+  { label: "₦150K - ₦300K/mo", min: 150_000, max: 300_000 },
+  { label: "₦300K - ₦600K/mo", min: 300_000, max: 600_000 },
+  { label: "₦600K - ₦1M/mo", min: 600_000, max: 1_000_000 },
+  { label: "₦1M+/mo", min: 1_000_000, max: Infinity },
 ] as const;
 
 export const BEDROOM_OPTIONS = ["Studio", "1", "2", "3", "4", "5+"] as const;
@@ -67,7 +67,7 @@ export const AMENITIES = [
   "Newly Built",
 ] as const;
 
-export const RENT_TYPES = ["Annual", "Biannual", "Monthly", "Per Event"] as const;
+export const RENT_TYPES = ["Monthly", "Daily", "Per Event"] as const;
 
 export type NigerianState = (typeof NIGERIAN_STATES)[number];
 export type PropertyType = (typeof PROPERTY_TYPES)[number];

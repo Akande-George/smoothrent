@@ -22,8 +22,8 @@ const pendingAmount = mockPayments
 const typeLabels: Record<string, string> = {
   rent: "Rent",
   caution_fee: "Caution Fee",
-  service_charge: "Service Charge",
-  agent_commission: "Agent Commission",
+  service_fee: "Service Fee",
+  referral_reward: "Referral Reward",
   subscription: "Subscription",
 };
 

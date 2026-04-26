@@ -68,10 +68,10 @@ export default function VerifyEmailPage() {
         <p className="mt-2 leading-5">
           Check your spam folder, or write to{" "}
           <a
-            href="mailto:hello@smoothrent.ng"
+            href="mailto:hello@smoothrent.io"
             className="text-emerald underline underline-offset-2"
           >
-            hello@smoothrent.ng
+            hello@smoothrent.io
           </a>
           . We respond in under 2 hours.
         </p>

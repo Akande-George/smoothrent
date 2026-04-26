@@ -93,7 +93,7 @@ export default async function LeaseDetailPage({ params }: { params: Promise<{ id
               </div>
               <div className="flex justify-between">
                 <span className="text-muted">Service Charge</span>
-                <Currency amount={lease.serviceCharge} className="font-medium" />
+                <Currency amount={lease.serviceFee} className="font-medium" />
               </div>
             </div>
           </CardContent>

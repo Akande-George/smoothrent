@@ -10,7 +10,16 @@ import { Select } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { mockProperties } from "@/lib/mock-data";
-import { PROPERTY_TYPES, NIGERIAN_STATES, MAJOR_CITIES, AMENITIES } from "@/lib/constants";
+import {
+  PROPERTY_TYPES,
+  NIGERIAN_STATES,
+  MAJOR_CITIES,
+  AMENITIES,
+  RENT_TYPES,
+  type RentType,
+} from "@/lib/constants";
+import { rentSuffix } from "@/lib/format";
+import { cn } from "@/lib/utils";
 
 export default function EditPropertyPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -24,9 +33,9 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
     city: property?.city || "",
     area: property?.area || "",
     address: property?.address || "",
+    rentType: (property?.rentType ?? "Monthly") as RentType,
     price: property?.price?.toString() || "",
     cautionFee: property?.cautionFee?.toString() || "",
-    serviceCharge: property?.serviceCharge?.toString() || "",
     serviceFee: property?.serviceFee?.toString() || "",
     bedrooms: property?.bedrooms?.toString() || "",
     bathrooms: property?.bathrooms?.toString() || "",
@@ -47,6 +56,7 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
   };
 
   const cities = form.state ? MAJOR_CITIES[form.state] || [] : [];
+  const rentSuffixDisplay = rentSuffix(form.rentType);
 
   if (!property) {
     return (
@@ -65,26 +75,26 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
           </Button>
         </Link>
         <div>
-          <h1 className="font-display text-3xl text-foreground">Edit Property</h1>
+          <h1 className="font-display text-3xl text-foreground">Edit property</h1>
           <p className="text-sm text-muted">{property.title}</p>
         </div>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Basic Information</CardTitle>
+          <CardTitle>Basic information</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <Select
-              label="Property Type"
+              label="Property type"
               placeholder="Select type"
               options={PROPERTY_TYPES.map((t) => ({ label: t, value: t }))}
               value={form.type}
               onValueChange={(v) => update("type", v)}
             />
             <Input
-              label="Property Title"
+              label="Property title"
               value={form.title}
               onChange={(e) => update("title", e.target.value)}
             />
@@ -127,7 +137,7 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
               onChange={(e) => update("area", e.target.value)}
             />
             <Input
-              label="Full Address"
+              label="Full address"
               value={form.address}
               onChange={(e) => update("address", e.target.value)}
             />
@@ -140,27 +150,53 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
           <CardTitle>Pricing</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
+          <div className="space-y-5">
+            <div>
+              <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.28em] text-muted-strong">
+                Rent type
+              </p>
+              <div className="grid gap-2 sm:grid-cols-3">
+                {RENT_TYPES.map((r) => {
+                  const active = form.rentType === r;
+                  return (
+                    <button
+                      type="button"
+                      key={r}
+                      onClick={() => update("rentType", r)}
+                      className={cn(
+                        "rounded-2xl border p-3 text-center transition",
+                        active
+                          ? "border-emerald bg-emerald text-ivory"
+                          : "border-line bg-paper hover:border-emerald/40"
+                      )}
+                    >
+                      <p
+                        className={cn(
+                          "font-display text-base",
+                          active ? "text-ivory" : "text-foreground"
+                        )}
+                      >
+                        {r}
+                      </p>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
             <Input
-              label="Annual Rent"
+              label={`Rent (${rentSuffixDisplay})`}
               type="number"
               value={form.price}
               onChange={(e) => update("price", e.target.value)}
             />
             <Input
-              label="Caution Fee"
+              label="Caution fee (refundable)"
               type="number"
               value={form.cautionFee}
               onChange={(e) => update("cautionFee", e.target.value)}
             />
             <Input
-              label="Service Charge"
-              type="number"
-              value={form.serviceCharge}
-              onChange={(e) => update("serviceCharge", e.target.value)}
-            />
-            <Input
-              label="Service Fee"
+              label="Service fee"
               type="number"
               value={form.serviceFee}
               onChange={(e) => update("serviceFee", e.target.value)}
@@ -196,7 +232,9 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
               />
             </div>
             <div>
-              <p className="mb-3 text-sm font-medium text-foreground">Amenities</p>
+              <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.28em] text-muted-strong">
+                Amenities
+              </p>
               <div className="grid grid-cols-2 gap-2">
                 {AMENITIES.map((amenity) => (
                   <Checkbox
@@ -214,11 +252,11 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
 
       <div className="flex justify-end gap-3">
         <Link href={`/landlord/properties/${id}`}>
-          <Button variant="secondary">Cancel</Button>
+          <Button variant="ivory">Cancel</Button>
         </Link>
         <Button variant="primary">
           <Save className="h-4 w-4" />
-          Save Changes
+          Save changes
         </Button>
       </div>
     </div>

@@ -22,9 +22,9 @@ import { ServiceRequestForm } from "@/components/services/service-request-form";
 import {
   DAY_LABEL,
   FREQUENCY_LABEL,
-  SERVICE_CATALOG,
   mockServiceRequests,
 } from "@/lib/services-data";
+import { useServiceCatalog } from "@/lib/service-catalog-store";
 import { formatNaira, formatDate } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { mockLeases } from "@/lib/mock-data";
@@ -66,6 +66,7 @@ const STATUS_LABEL: Record<ServiceRequestStatus, string> = {
 };
 
 export default function CustomerServicesPage() {
+  const { items: catalog } = useServiceCatalog();
   const myLease = mockLeases.find((l) => l.tenantId === TENANT_ID && l.status === "active");
   const propertyTitle =
     myLease?.propertyTitle ?? "Luxury 3 Bedroom Flat in Lekki Phase 1";
@@ -366,12 +367,12 @@ export default function CustomerServicesPage() {
             </h2>
           </div>
           <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-muted-strong">
-            {SERVICE_CATALOG.length} vetted vendors
+            {catalog.length} vetted vendors
           </p>
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {SERVICE_CATALOG.map((service) => (
+          {catalog.map((service) => (
             <article
               key={service.id}
               className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-paper transition-all hover:-translate-y-1 hover:border-emerald/50"

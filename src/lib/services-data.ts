@@ -5,7 +5,7 @@ import type {
   DayOfWeek,
 } from "@/types/service";
 
-export const SERVICE_CATALOG: ServiceCatalogItem[] = [
+export const DEFAULT_SERVICE_CATALOG: ServiceCatalogItem[] = [
   {
     id: "svc-cleaning",
     name: "House cleaning",
@@ -159,6 +159,10 @@ export const DAY_LABEL: Record<DayOfWeek, { short: string; long: string }> = {
 };
 
 export const DAYS_OF_WEEK: DayOfWeek[] = [0, 1, 2, 3, 4, 5, 6];
+
+// ── Backwards-compat alias for callers that still import SERVICE_CATALOG.
+// Prefer `useServiceCatalog()` from "@/lib/service-catalog-store" for live admin edits.
+export const SERVICE_CATALOG = DEFAULT_SERVICE_CATALOG;
 
 export const mockServiceRequests: ServiceRequest[] = [
   {

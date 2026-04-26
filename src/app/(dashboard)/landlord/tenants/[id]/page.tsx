@@ -92,7 +92,7 @@ export default async function TenantDetailPage({ params }: { params: Promise<{ i
                       </div>
                       <div>
                         <span className="text-muted">Service Charge</span>
-                        <Currency amount={lease.serviceCharge} className="block font-medium" />
+                        <Currency amount={lease.serviceFee} className="block font-medium" />
                       </div>
                     </div>
                   </div>

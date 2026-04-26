@@ -50,7 +50,7 @@ export default function AdminPropertiesPage() {
                 <Currency
                   amount={property.price}
                   className="text-sm font-medium text-foreground"
-                  suffix="/yr"
+                  suffix="/mo"
                 />
                 <StatusBadge status={property.status} />
                 <Badge>{property.type}</Badge>

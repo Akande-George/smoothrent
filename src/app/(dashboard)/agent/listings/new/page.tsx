@@ -1,141 +1,465 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Upload } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { FileUpload } from "@/components/ui/file-upload";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  PROPERTY_TYPES,
+  NIGERIAN_STATES,
+  MAJOR_CITIES,
+  AMENITIES,
+  RENT_TYPES,
+  type RentType,
+} from "@/lib/constants";
+import { formatNaira, rentSuffix } from "@/lib/format";
+import {
+  computeServiceFee,
+  readServiceFeeConfig,
+  type ServiceFeeConfig,
+} from "@/lib/service-fee-config";
+import { cn } from "@/lib/utils";
 
-const propertyTypes = [
-  { label: "Flat", value: "flat" },
-  { label: "Duplex", value: "duplex" },
-  { label: "Self-Contain", value: "self-contain" },
-  { label: "Mini Flat", value: "mini-flat" },
-  { label: "Penthouse", value: "penthouse" },
-  { label: "Terrace", value: "terrace" },
-  { label: "Bungalow", value: "bungalow" },
-  { label: "Event Hall", value: "event-hall" },
+const STEPS = [
+  "Property type",
+  "Owner",
+  "Location",
+  "Pricing",
+  "Features",
+  "Photos",
+  "Review",
 ];
 
-const nigerianStates = [
-  { label: "Lagos", value: "Lagos" },
-  { label: "FCT Abuja", value: "FCT Abuja" },
-  { label: "Rivers", value: "Rivers" },
-  { label: "Kano", value: "Kano" },
-  { label: "Oyo", value: "Oyo" },
-  { label: "Enugu", value: "Enugu" },
-  { label: "Delta", value: "Delta" },
-  { label: "Anambra", value: "Anambra" },
-];
+const RENT_TYPE_HELPER: Record<RentType, string> = {
+  Monthly: "Standard for residential rentals.",
+  Daily: "Best for short-stays and serviced apartments.",
+  "Per Event": "Single-day venue or event hire.",
+};
 
-export default function NewListingPage() {
-  const [type, setType] = useState("");
-  const [state, setState] = useState("");
+function defaultRentTypeFor(propertyType: string): RentType {
+  if (propertyType === "Event Hall") return "Per Event";
+  return "Monthly";
+}
+
+export default function NewAgentListingPage() {
+  const [step, setStep] = useState(0);
+  const [feeConfig, setFeeConfig] = useState<ServiceFeeConfig | null>(null);
+  const [feeAutofilled, setFeeAutofilled] = useState(false);
+
+  const [form, setForm] = useState({
+    type: "",
+    title: "",
+    description: "",
+    landlordName: "",
+    landlordEmail: "",
+    landlordPhone: "",
+    state: "",
+    city: "",
+    area: "",
+    address: "",
+    rentType: "Monthly" as RentType,
+    price: "",
+    cautionFee: "",
+    serviceFee: "",
+    bedrooms: "",
+    bathrooms: "",
+    toilets: "",
+    amenities: [] as string[],
+    photos: [] as File[],
+  });
+
+  useEffect(() => {
+    setFeeConfig(readServiceFeeConfig());
+  }, []);
+
+  useEffect(() => {
+    if (form.type) {
+      setForm((prev) => ({ ...prev, rentType: defaultRentTypeFor(prev.type) }));
+    }
+  }, [form.type]);
+
+  useEffect(() => {
+    if (!feeConfig) return;
+    if (feeAutofilled) return;
+    const rent = Number(form.price || 0);
+    if (rent > 0) {
+      setForm((prev) => ({
+        ...prev,
+        serviceFee: String(computeServiceFee(rent, feeConfig)),
+      }));
+      setFeeAutofilled(true);
+    }
+  }, [form.price, feeConfig, feeAutofilled]);
+
+  const recommendedFee =
+    feeConfig && form.price
+      ? computeServiceFee(Number(form.price), feeConfig)
+      : null;
+
+  const update = (key: string, value: unknown) =>
+    setForm((prev) => ({ ...prev, [key]: value }));
+
+  const toggleAmenity = (amenity: string) => {
+    setForm((prev) => ({
+      ...prev,
+      amenities: prev.amenities.includes(amenity)
+        ? prev.amenities.filter((a) => a !== amenity)
+        : [...prev.amenities, amenity],
+    }));
+  };
+
+  const cities = form.state ? MAJOR_CITIES[form.state] || [] : [];
+  const rentSuffixDisplay = rentSuffix(form.rentType);
 
   return (
-    <div className="space-y-8">
-      <div className="flex items-center gap-4">
+    <div className="mx-auto max-w-2xl space-y-6">
+      <div className="flex items-center gap-3">
         <Link href="/agent/listings">
-          <Button variant="ghost" size="icon">
+          <Button variant="ghost" size="icon" type="button">
             <ArrowLeft className="h-5 w-5" />
           </Button>
         </Link>
         <div>
-          <h1 className="font-display text-3xl text-foreground">
-            Add New Listing
-          </h1>
-          <p className="mt-1 text-muted">
-            Fill in the details to create a new property listing.
+          <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-saffron-deep">
+            Step {step + 1} of {STEPS.length}
           </p>
+          <h1 className="mt-1 font-display text-3xl text-foreground">
+            List a property.
+          </h1>
+          <p className="text-sm text-muted-strong">{STEPS[step]}</p>
         </div>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Property Details</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form className="space-y-6">
-            <Input
-              id="title"
-              label="Property Title"
-              placeholder="e.g. Luxury 3 Bedroom Flat in Lekki Phase 1"
-            />
+      <div className="flex gap-2">
+        {STEPS.map((_, i) => (
+          <div
+            key={i}
+            className={cn(
+              "h-1.5 flex-1 rounded-full transition-colors",
+              i <= step ? "bg-emerald" : "bg-line"
+            )}
+          />
+        ))}
+      </div>
 
-            <div className="grid gap-6 sm:grid-cols-2">
+      <Card>
+        <CardContent className="pt-6">
+          {step === 0 && (
+            <div className="space-y-4">
               <Select
-                label="Property Type"
+                label="Property type"
                 placeholder="Select type"
-                options={propertyTypes}
-                value={type}
-                onValueChange={setType}
+                options={PROPERTY_TYPES.map((t) => ({ label: t, value: t }))}
+                value={form.type}
+                onValueChange={(v) => update("type", v)}
               />
               <Input
-                id="price"
-                label="Annual Rent (₦)"
-                type="number"
-                placeholder="e.g. 3500000"
+                label="Property title"
+                placeholder="e.g. 2-bed Flat in GRA Phase 2"
+                value={form.title}
+                onChange={(e) => update("title", e.target.value)}
+              />
+              <Textarea
+                label="Description"
+                placeholder="Describe the property…"
+                value={form.description}
+                onChange={(e) => update("description", e.target.value)}
+                rows={4}
               />
             </div>
+          )}
 
-            <div className="grid gap-6 sm:grid-cols-2">
+          {step === 1 && (
+            <div className="space-y-4">
+              <div className="rounded-2xl border border-dashed border-line bg-card p-4 text-xs text-muted-strong">
+                <p className="font-mono uppercase tracking-[0.28em] text-muted">
+                  Listing on behalf of
+                </p>
+                <p className="mt-1 leading-5">
+                  We&rsquo;ll send the landlord a confirmation email so they can
+                  approve the listing before it goes live.
+                </p>
+              </div>
+              <Input
+                label="Landlord full name"
+                placeholder="e.g. Aisha Abdullahi"
+                value={form.landlordName}
+                onChange={(e) => update("landlordName", e.target.value)}
+              />
+              <div className="grid gap-4 sm:grid-cols-2">
+                <Input
+                  label="Landlord email"
+                  type="email"
+                  placeholder="aisha@gmail.com"
+                  value={form.landlordEmail}
+                  onChange={(e) => update("landlordEmail", e.target.value)}
+                />
+                <Input
+                  label="Landlord phone"
+                  type="tel"
+                  placeholder="+234 801 234 5678"
+                  value={form.landlordPhone}
+                  onChange={(e) => update("landlordPhone", e.target.value)}
+                />
+              </div>
+            </div>
+          )}
+
+          {step === 2 && (
+            <div className="space-y-4">
               <Select
                 label="State"
                 placeholder="Select state"
-                options={nigerianStates}
-                value={state}
-                onValueChange={setState}
+                options={NIGERIAN_STATES.map((s) => ({ label: s, value: s }))}
+                value={form.state}
+                onValueChange={(v) => {
+                  update("state", v);
+                  update("city", "");
+                }}
+              />
+              <Select
+                label="City"
+                placeholder="Select city"
+                options={cities.map((c) => ({ label: c, value: c }))}
+                value={form.city}
+                onValueChange={(v) => update("city", v)}
               />
               <Input
-                id="city"
-                label="City / Area"
-                placeholder="e.g. Lekki Phase 1"
+                label="Area"
+                placeholder="e.g. GRA Phase 2"
+                value={form.area}
+                onChange={(e) => update("area", e.target.value)}
+              />
+              <Input
+                label="Full address"
+                placeholder="e.g. 22 Peter Odili Road"
+                value={form.address}
+                onChange={(e) => update("address", e.target.value)}
               />
             </div>
+          )}
 
-            <div className="grid gap-6 sm:grid-cols-3">
-              <Input id="bedrooms" label="Bedrooms" type="number" placeholder="0" />
-              <Input id="bathrooms" label="Bathrooms" type="number" placeholder="0" />
-              <Input id="sqft" label="Size (sqft)" type="number" placeholder="0" />
+          {step === 3 && (
+            <div className="space-y-5">
+              <div>
+                <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.28em] text-muted-strong">
+                  Rent type
+                </p>
+                <div className="grid gap-2 sm:grid-cols-3">
+                  {RENT_TYPES.map((r) => {
+                    const active = form.rentType === r;
+                    return (
+                      <button
+                        type="button"
+                        key={r}
+                        onClick={() => update("rentType", r)}
+                        className={cn(
+                          "rounded-2xl border p-3 text-left transition",
+                          active
+                            ? "border-emerald bg-emerald text-ivory"
+                            : "border-line bg-paper hover:-translate-y-0.5 hover:border-emerald/40"
+                        )}
+                      >
+                        <p
+                          className={cn(
+                            "font-display text-lg",
+                            active ? "text-ivory" : "text-foreground"
+                          )}
+                        >
+                          {r}
+                        </p>
+                        <p
+                          className={cn(
+                            "text-xs",
+                            active ? "text-ivory/80" : "text-muted-strong"
+                          )}
+                        >
+                          {RENT_TYPE_HELPER[r]}
+                        </p>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <Input
+                label={`Rent (${rentSuffixDisplay})`}
+                type="number"
+                placeholder="e.g. 290000"
+                value={form.price}
+                onChange={(e) => {
+                  setFeeAutofilled(false);
+                  update("price", e.target.value);
+                }}
+              />
+              <Input
+                label="Caution fee (refundable)"
+                type="number"
+                placeholder="e.g. 290000"
+                value={form.cautionFee}
+                onChange={(e) => update("cautionFee", e.target.value)}
+              />
+              <Input
+                label="Service fee"
+                type="number"
+                placeholder="e.g. 350000"
+                hint={
+                  recommendedFee
+                    ? `SmoothRent suggests ${formatNaira(recommendedFee)}`
+                    : "Set by admin"
+                }
+                value={form.serviceFee}
+                onChange={(e) => update("serviceFee", e.target.value)}
+              />
+              {feeConfig && (
+                <div className="rounded-2xl border border-line bg-paper p-4 text-xs text-muted-strong">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="h-3.5 w-3.5 text-saffron-deep" />
+                    <p className="font-mono uppercase tracking-[0.32em] text-muted">
+                      Admin-set platform fee
+                    </p>
+                  </div>
+                  <p className="mt-2 leading-5">
+                    {feeConfig.mode === "percent"
+                      ? `Default ${feeConfig.percentOfRent}% of rent (min ${formatNaira(feeConfig.minAmount)} · max ${formatNaira(feeConfig.maxAmount)}).`
+                      : `Flat ${formatNaira(feeConfig.fixedAmount)} per listing.`}{" "}
+                    Override here if needed.
+                  </p>
+                </div>
+              )}
             </div>
+          )}
 
-            <Textarea
-              id="description"
-              label="Description"
-              placeholder="Describe the property in detail..."
-              rows={5}
-            />
-
-            {/* Photo Upload Placeholder */}
-            <div className="space-y-1.5">
-              <label className="text-sm font-medium text-foreground">
-                Photos
-              </label>
-              <div className="flex min-h-[160px] items-center justify-center rounded-2xl border-2 border-dashed border-black/10 bg-white/40">
-                <div className="flex flex-col items-center gap-2 text-muted">
-                  <Upload className="h-8 w-8" />
-                  <p className="text-sm">
-                    Drag photos here or click to upload
-                  </p>
-                  <p className="text-xs text-muted/60">
-                    PNG, JPG up to 5MB each
-                  </p>
+          {step === 4 && (
+            <div className="space-y-6">
+              <div className="grid grid-cols-3 gap-4">
+                <Input
+                  label="Bedrooms"
+                  type="number"
+                  placeholder="0"
+                  value={form.bedrooms}
+                  onChange={(e) => update("bedrooms", e.target.value)}
+                />
+                <Input
+                  label="Bathrooms"
+                  type="number"
+                  placeholder="0"
+                  value={form.bathrooms}
+                  onChange={(e) => update("bathrooms", e.target.value)}
+                />
+                <Input
+                  label="Toilets"
+                  type="number"
+                  placeholder="0"
+                  value={form.toilets}
+                  onChange={(e) => update("toilets", e.target.value)}
+                />
+              </div>
+              <div>
+                <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.28em] text-muted-strong">
+                  Amenities
+                </p>
+                <div className="grid grid-cols-2 gap-2">
+                  {AMENITIES.map((amenity) => (
+                    <Checkbox
+                      key={amenity}
+                      label={amenity}
+                      checked={form.amenities.includes(amenity)}
+                      onCheckedChange={() => toggleAmenity(amenity)}
+                    />
+                  ))}
                 </div>
               </div>
             </div>
+          )}
 
-            <div className="flex items-center gap-3 pt-4">
-              <Button type="button">Publish Listing</Button>
-              <Button type="button" variant="secondary">
-                Save as Draft
-              </Button>
+          {step === 5 && (
+            <FileUpload
+              label="Property photos"
+              multiple
+              maxFiles={10}
+              onChange={(files) => update("photos", files)}
+            />
+          )}
+
+          {step === 6 && (
+            <div className="space-y-4">
+              <h2 className="font-display text-2xl text-foreground">
+                Review the listing
+              </h2>
+              <div className="space-y-3 text-sm">
+                {[
+                  ["Type", form.type || "—"],
+                  ["Title", form.title || "—"],
+                  ["Landlord", form.landlordName || "—"],
+                  [
+                    "Location",
+                    [form.area, form.city, form.state].filter(Boolean).join(", ") ||
+                      "—",
+                  ],
+                  ["Rent type", form.rentType],
+                  [
+                    "Rent",
+                    form.price
+                      ? `${formatNaira(Number(form.price))}${rentSuffixDisplay}`
+                      : "—",
+                  ],
+                  [
+                    "Caution",
+                    form.cautionFee ? formatNaira(Number(form.cautionFee)) : "—",
+                  ],
+                  [
+                    "Service fee",
+                    form.serviceFee
+                      ? formatNaira(Number(form.serviceFee))
+                      : "—",
+                  ],
+                  ["Bedrooms / Baths", `${form.bedrooms || 0} / ${form.bathrooms || 0}`],
+                  ["Amenities", `${form.amenities.length} selected`],
+                  ["Photos", `${form.photos.length} uploaded`],
+                ].map(([label, value]) => (
+                  <div
+                    key={label}
+                    className="flex items-center justify-between border-b border-line pb-2 last:border-none"
+                  >
+                    <span className="text-muted-strong">{label}</span>
+                    <span className="font-medium text-foreground">{value}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </form>
+          )}
         </CardContent>
       </Card>
+
+      <div className="flex items-center justify-between">
+        <Button
+          variant="ivory"
+          type="button"
+          onClick={() => setStep((s) => s - 1)}
+          disabled={step === 0}
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back
+        </Button>
+        {step < STEPS.length - 1 ? (
+          <Button type="button" variant="primary" onClick={() => setStep((s) => s + 1)}>
+            Next
+            <ArrowRight className="h-4 w-4" />
+          </Button>
+        ) : (
+          <Button type="button" variant="accent">
+            <Check className="h-4 w-4" />
+            Submit for approval
+          </Button>
+        )}
+      </div>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { ArrowUpRight, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ApplyNowModal } from "./apply-now-modal";
 import { BookInspectionModal } from "./book-inspection-modal";
-import { formatNaira } from "@/lib/format";
+import { formatNaira, rentLabel, rentSuffix } from "@/lib/format";
 import type { Property } from "@/types/property";
 
 export function PropertyActions({ property }: { property: Property }) {
@@ -22,9 +22,14 @@ export function PropertyActions({ property }: { property: Property }) {
           {property.type}
         </span>
         <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.28em] text-ivory/65">
-          {property.rentType === "Per Event" ? "Per event" : "Annual rent"}
+          {rentLabel(property.rentType)}
         </p>
-        <p className="mt-1 font-display text-4xl">{formatNaira(property.price)}</p>
+        <p className="mt-1 font-display text-4xl">
+          {formatNaira(property.price)}
+          <span className="ml-1 text-base text-ivory/70">
+            {rentSuffix(property.rentType)}
+          </span>
+        </p>
 
         <div className="mt-3 grid grid-cols-2 gap-2 rounded-xl border border-ivory/15 bg-ivory/5 p-3 text-xs text-ivory/85">
           <div>

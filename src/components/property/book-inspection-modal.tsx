@@ -322,7 +322,7 @@ export function BookInspectionModal({
                   id="email"
                   label="Email"
                   type="email"
-                  placeholder="you@smoothrent.ng"
+                  placeholder="you@smoothrent.io"
                   value={form.email}
                   error={errors.email}
                   onChange={(e) => update("email", e.target.value)}

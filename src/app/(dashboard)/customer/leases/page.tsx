@@ -43,7 +43,7 @@ export default function LeasesPage() {
                     <p className="text-xs text-muted">Rent Amount</p>
                     <Currency
                       amount={lease.rentAmount}
-                      suffix="/yr"
+                      suffix="/mo"
                       className="font-display text-lg text-foreground"
                     />
                   </div>

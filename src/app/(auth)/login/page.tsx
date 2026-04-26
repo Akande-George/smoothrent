@@ -14,7 +14,7 @@ const QUICK_LOGINS: { role: UserRole; label: string; email: string }[] = [
   { role: "customer", label: "Tenant", email: "chinedu@gmail.com" },
   { role: "landlord", label: "Landlord", email: "aisha@gmail.com" },
   { role: "agent", label: "Agent", email: "emeka@gmail.com" },
-  { role: "admin", label: "Admin", email: "fatima@smoothrent.ng" },
+  { role: "admin", label: "Admin", email: "fatima@smoothrent.io" },
 ];
 
 export default function LoginPage() {
@@ -115,7 +115,7 @@ function LoginForm() {
           label="Email"
           type="email"
           autoComplete="email"
-          placeholder="you@smoothrent.ng"
+          placeholder="you@smoothrent.io"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />

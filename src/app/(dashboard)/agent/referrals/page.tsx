@@ -3,7 +3,7 @@
 import { ReferralsView } from "@/components/shared/referrals-view";
 import { useMockAuth } from "@/hooks/use-mock-auth";
 
-export default function CustomerReferralsPage() {
+export default function AgentReferralsPage() {
   const { user } = useMockAuth();
-  return <ReferralsView role="customer" firstName={user.firstName} />;
+  return <ReferralsView role="agent" firstName={user.firstName} />;
 }

@@ -84,7 +84,7 @@ export default function ForgotPasswordPage() {
           label="Email"
           type="email"
           autoComplete="email"
-          placeholder="you@smoothrent.ng"
+          placeholder="you@smoothrent.io"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />

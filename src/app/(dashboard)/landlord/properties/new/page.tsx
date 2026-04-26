@@ -9,13 +9,21 @@ import { Select } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { FileUpload } from "@/components/ui/file-upload";
 import { Card, CardContent } from "@/components/ui/card";
-import { PROPERTY_TYPES, NIGERIAN_STATES, MAJOR_CITIES, AMENITIES } from "@/lib/constants";
-import { formatNaira } from "@/lib/format";
+import {
+  PROPERTY_TYPES,
+  NIGERIAN_STATES,
+  MAJOR_CITIES,
+  AMENITIES,
+  RENT_TYPES,
+  type RentType,
+} from "@/lib/constants";
+import { formatNaira, rentSuffix } from "@/lib/format";
 import {
   computeServiceFee,
   readServiceFeeConfig,
   type ServiceFeeConfig,
 } from "@/lib/service-fee-config";
+import { cn } from "@/lib/utils";
 
 const STEPS = [
   "Property Type",
@@ -25,6 +33,17 @@ const STEPS = [
   "Photos",
   "Review",
 ];
+
+const RENT_TYPE_HELPER: Record<RentType, string> = {
+  Monthly: "Standard for residential rentals.",
+  Daily: "Best for short-stays and serviced apartments.",
+  "Per Event": "Single-day venue or event hire.",
+};
+
+function defaultRentTypeFor(propertyType: string): RentType {
+  if (propertyType === "Event Hall") return "Per Event";
+  return "Monthly";
+}
 
 export default function NewPropertyPage() {
   const [step, setStep] = useState(0);
@@ -38,9 +57,9 @@ export default function NewPropertyPage() {
     city: "",
     area: "",
     address: "",
+    rentType: "Monthly" as RentType,
     price: "",
     cautionFee: "",
-    serviceCharge: "",
     serviceFee: "",
     bedrooms: "",
     bathrooms: "",
@@ -52,6 +71,12 @@ export default function NewPropertyPage() {
   useEffect(() => {
     setFeeConfig(readServiceFeeConfig());
   }, []);
+
+  useEffect(() => {
+    if (form.type) {
+      setForm((prev) => ({ ...prev, rentType: defaultRentTypeFor(prev.type) }));
+    }
+  }, [form.type]);
 
   useEffect(() => {
     if (!feeConfig) return;
@@ -84,49 +109,52 @@ export default function NewPropertyPage() {
   };
 
   const cities = form.state ? MAJOR_CITIES[form.state] || [] : [];
+  const rentSuffixDisplay = rentSuffix(form.rentType);
 
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <div>
-        <h1 className="font-display text-3xl text-foreground">Add New Property</h1>
-        <p className="text-sm text-muted">
-          Step {step + 1} of {STEPS.length} &mdash; {STEPS[step]}
+        <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-saffron-deep">
+          Step {step + 1} of {STEPS.length}
         </p>
+        <h1 className="mt-2 font-display text-3xl text-foreground">
+          Add a property.
+        </h1>
+        <p className="text-sm text-muted-strong">{STEPS[step]}</p>
       </div>
 
-      {/* Step Indicator */}
       <div className="flex gap-2">
         {STEPS.map((_, i) => (
           <div
             key={i}
-            className={`h-1.5 flex-1 rounded-full transition-colors ${
-              i <= step ? "bg-accent" : "bg-black/10"
-            }`}
+            className={cn(
+              "h-1.5 flex-1 rounded-full transition-colors",
+              i <= step ? "bg-emerald" : "bg-line"
+            )}
           />
         ))}
       </div>
 
       <Card>
         <CardContent className="pt-6">
-          {/* Step 1: Type */}
           {step === 0 && (
             <div className="space-y-4">
               <Select
-                label="Property Type"
+                label="Property type"
                 placeholder="Select type"
                 options={PROPERTY_TYPES.map((t) => ({ label: t, value: t }))}
                 value={form.type}
                 onValueChange={(v) => update("type", v)}
               />
               <Input
-                label="Property Title"
+                label="Property title"
                 placeholder="e.g. Luxury 3 Bedroom Flat in Lekki"
                 value={form.title}
                 onChange={(e) => update("title", e.target.value)}
               />
               <Textarea
                 label="Description"
-                placeholder="Describe the property..."
+                placeholder="Describe the property…"
                 value={form.description}
                 onChange={(e) => update("description", e.target.value)}
                 rows={4}
@@ -134,7 +162,6 @@ export default function NewPropertyPage() {
             </div>
           )}
 
-          {/* Step 2: Location */}
           {step === 1 && (
             <div className="space-y-4">
               <Select
@@ -161,7 +188,7 @@ export default function NewPropertyPage() {
                 onChange={(e) => update("area", e.target.value)}
               />
               <Input
-                label="Full Address"
+                label="Full address"
                 placeholder="e.g. 12 Admiralty Way"
                 value={form.address}
                 onChange={(e) => update("address", e.target.value)}
@@ -169,32 +196,69 @@ export default function NewPropertyPage() {
             </div>
           )}
 
-          {/* Step 3: Pricing */}
           {step === 2 && (
-            <div className="space-y-4">
+            <div className="space-y-5">
+              <div>
+                <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.28em] text-muted-strong">
+                  Rent type
+                </p>
+                <div className="grid gap-2 sm:grid-cols-3">
+                  {RENT_TYPES.map((r) => {
+                    const active = form.rentType === r;
+                    return (
+                      <button
+                        type="button"
+                        key={r}
+                        onClick={() => update("rentType", r)}
+                        className={cn(
+                          "rounded-2xl border p-3 text-left transition",
+                          active
+                            ? "border-emerald bg-emerald text-ivory"
+                            : "border-line bg-paper hover:-translate-y-0.5 hover:border-emerald/40"
+                        )}
+                      >
+                        <p
+                          className={cn(
+                            "font-display text-lg",
+                            active ? "text-ivory" : "text-foreground"
+                          )}
+                        >
+                          {r}
+                        </p>
+                        <p
+                          className={cn(
+                            "text-xs",
+                            active ? "text-ivory/80" : "text-muted-strong"
+                          )}
+                        >
+                          {RENT_TYPE_HELPER[r]}
+                        </p>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
               <Input
-                label="Annual Rent"
+                label={`Rent (${rentSuffixDisplay.replace("/", "per ")})`}
                 type="number"
-                placeholder="e.g. 3500000"
+                placeholder="e.g. 290000"
+                hint={`Quoted ${rentSuffixDisplay}`}
                 value={form.price}
-                onChange={(e) => update("price", e.target.value)}
+                onChange={(e) => {
+                  setFeeAutofilled(false);
+                  update("price", e.target.value);
+                }}
               />
               <Input
-                label="Caution Fee"
+                label="Caution fee (refundable)"
                 type="number"
-                placeholder="e.g. 3500000"
+                placeholder="e.g. 290000"
                 value={form.cautionFee}
                 onChange={(e) => update("cautionFee", e.target.value)}
               />
               <Input
-                label="Service Charge"
-                type="number"
-                placeholder="e.g. 1500000"
-                value={form.serviceCharge}
-                onChange={(e) => update("serviceCharge", e.target.value)}
-              />
-              <Input
-                label="Service Fee"
+                label="Service fee"
                 type="number"
                 placeholder="e.g. 350000"
                 hint={
@@ -215,7 +279,7 @@ export default function NewPropertyPage() {
                   </div>
                   <p className="mt-2 leading-5">
                     {feeConfig.mode === "percent"
-                      ? `Default ${feeConfig.percentOfRent}% of annual rent (min ${formatNaira(feeConfig.minAmount)} · max ${formatNaira(feeConfig.maxAmount)}).`
+                      ? `Default ${feeConfig.percentOfRent}% of rent (min ${formatNaira(feeConfig.minAmount)} · max ${formatNaira(feeConfig.maxAmount)}).`
                       : `Flat ${formatNaira(feeConfig.fixedAmount)} per listing.`}{" "}
                     Override here if needed.
                   </p>
@@ -224,7 +288,6 @@ export default function NewPropertyPage() {
             </div>
           )}
 
-          {/* Step 4: Features */}
           {step === 3 && (
             <div className="space-y-6">
               <div className="grid grid-cols-3 gap-4">
@@ -251,7 +314,9 @@ export default function NewPropertyPage() {
                 />
               </div>
               <div>
-                <p className="mb-3 text-sm font-medium text-foreground">Amenities</p>
+                <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.28em] text-muted-strong">
+                  Amenities
+                </p>
                 <div className="grid grid-cols-2 gap-2">
                   {AMENITIES.map((amenity) => (
                     <Checkbox
@@ -266,69 +331,67 @@ export default function NewPropertyPage() {
             </div>
           )}
 
-          {/* Step 5: Photos */}
           {step === 4 && (
             <FileUpload
-              label="Property Photos"
+              label="Property photos"
               multiple
               maxFiles={10}
               onChange={(files) => update("photos", files)}
             />
           )}
 
-          {/* Step 6: Review */}
           {step === 5 && (
             <div className="space-y-4">
-              <h2 className="font-display text-lg text-foreground">Review Your Listing</h2>
+              <h2 className="font-display text-2xl text-foreground">
+                Review your listing
+              </h2>
               <div className="space-y-3 text-sm">
-                <div className="flex justify-between border-b border-black/5 pb-2">
-                  <span className="text-muted">Type</span>
-                  <span className="font-medium text-foreground">{form.type || "---"}</span>
-                </div>
-                <div className="flex justify-between border-b border-black/5 pb-2">
-                  <span className="text-muted">Title</span>
-                  <span className="font-medium text-foreground">{form.title || "---"}</span>
-                </div>
-                <div className="flex justify-between border-b border-black/5 pb-2">
-                  <span className="text-muted">Location</span>
-                  <span className="font-medium text-foreground">
-                    {form.area ? `${form.area}, ` : ""}{form.city}, {form.state}
-                  </span>
-                </div>
-                <div className="flex justify-between border-b border-black/5 pb-2">
-                  <span className="text-muted">Rent</span>
-                  <span className="font-medium text-foreground">
-                    {form.price ? formatNaira(Number(form.price)) : "---"}
-                  </span>
-                </div>
-                <div className="flex justify-between border-b border-black/5 pb-2">
-                  <span className="text-muted">Bedrooms / Bathrooms</span>
-                  <span className="font-medium text-foreground">
-                    {form.bedrooms || 0} / {form.bathrooms || 0}
-                  </span>
-                </div>
-                <div className="flex justify-between border-b border-black/5 pb-2">
-                  <span className="text-muted">Amenities</span>
-                  <span className="font-medium text-foreground">
-                    {form.amenities.length} selected
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted">Photos</span>
-                  <span className="font-medium text-foreground">
-                    {form.photos.length} uploaded
-                  </span>
-                </div>
+                {[
+                  ["Type", form.type || "—"],
+                  ["Title", form.title || "—"],
+                  [
+                    "Location",
+                    [form.area, form.city, form.state].filter(Boolean).join(", ") ||
+                      "—",
+                  ],
+                  ["Rent type", form.rentType],
+                  [
+                    "Rent",
+                    form.price
+                      ? `${formatNaira(Number(form.price))}${rentSuffixDisplay}`
+                      : "—",
+                  ],
+                  [
+                    "Caution",
+                    form.cautionFee ? formatNaira(Number(form.cautionFee)) : "—",
+                  ],
+                  [
+                    "Service fee",
+                    form.serviceFee
+                      ? formatNaira(Number(form.serviceFee))
+                      : "—",
+                  ],
+                  ["Bedrooms / Baths", `${form.bedrooms || 0} / ${form.bathrooms || 0}`],
+                  ["Amenities", `${form.amenities.length} selected`],
+                  ["Photos", `${form.photos.length} uploaded`],
+                ].map(([label, value]) => (
+                  <div
+                    key={label}
+                    className="flex items-center justify-between border-b border-line pb-2 last:border-none"
+                  >
+                    <span className="text-muted-strong">{label}</span>
+                    <span className="font-medium text-foreground">{value}</span>
+                  </div>
+                ))}
               </div>
             </div>
           )}
         </CardContent>
       </Card>
 
-      {/* Navigation */}
       <div className="flex items-center justify-between">
         <Button
-          variant="secondary"
+          variant="ivory"
           onClick={() => setStep((s) => s - 1)}
           disabled={step === 0}
         >
@@ -343,7 +406,7 @@ export default function NewPropertyPage() {
         ) : (
           <Button variant="accent">
             <Check className="h-4 w-4" />
-            Submit Listing
+            Submit listing
           </Button>
         )}
       </div>

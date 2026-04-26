@@ -1,5 +1,10 @@
 export type PaymentStatus = "paid" | "pending" | "overdue" | "failed" | "refunded";
-export type PaymentType = "rent" | "caution_fee" | "service_charge" | "agent_commission" | "subscription";
+export type PaymentType =
+  | "rent"
+  | "caution_fee"
+  | "service_fee"
+  | "referral_reward"
+  | "subscription";
 
 export interface Payment {
   id: string;

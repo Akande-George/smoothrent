@@ -1,10 +1,10 @@
 import { Bed, Bath, Maximize, Toilet, Check } from "lucide-react";
 import { Currency } from "@/components/ui/currency";
+import { rentLabel, rentSuffix } from "@/lib/format";
 import type { Property } from "@/types/property";
 
 export function PropertyDetails({ property }: { property: Property }) {
-  const total =
-    property.price + property.cautionFee + property.serviceCharge + property.serviceFee;
+  const total = property.price + property.cautionFee + property.serviceFee;
 
   const specs = [
     property.bedrooms > 0 && {
@@ -51,10 +51,13 @@ export function PropertyDetails({ property }: { property: Property }) {
         </h3>
         <div className="mt-5 space-y-3 text-sm">
           {[
-            { label: "Annual rent", value: property.price },
+            {
+              label: rentLabel(property.rentType),
+              value: property.price,
+              suffix: rentSuffix(property.rentType),
+            },
             { label: "Caution fee (refundable)", value: property.cautionFee },
-            { label: "Service charge", value: property.serviceCharge },
-            { label: "Service fee", value: property.serviceFee },
+            { label: "SmoothRent service fee", value: property.serviceFee },
           ]
             .filter((row) => row.value > 0)
             .map((row) => (
@@ -63,14 +66,23 @@ export function PropertyDetails({ property }: { property: Property }) {
                 className="flex items-center justify-between border-b border-line pb-3 last:border-none last:pb-0"
               >
                 <span className="text-muted-strong">{row.label}</span>
-                <Currency amount={row.value} className="font-medium text-foreground" />
+                <Currency
+                  amount={row.value}
+                  suffix={row.suffix}
+                  className="font-medium text-foreground"
+                />
               </div>
             ))}
         </div>
         <div className="mt-5 flex items-center justify-between rounded-2xl bg-emerald p-4 text-ivory">
-          <span className="font-mono text-[11px] uppercase tracking-[0.28em] text-saffron">
-            Total move-in cost
-          </span>
+          <div>
+            <span className="font-mono text-[11px] uppercase tracking-[0.28em] text-saffron">
+              Move-in total
+            </span>
+            <p className="font-mono text-[10px] text-ivory/60">
+              First month + caution + service fee
+            </p>
+          </div>
           <Currency amount={total} className="font-display text-2xl" />
         </div>
       </article>

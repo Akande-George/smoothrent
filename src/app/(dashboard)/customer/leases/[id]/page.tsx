@@ -98,7 +98,7 @@ export default async function LeaseDetailPage({
             <p className="text-xs text-muted">Rent Amount</p>
             <Currency
               amount={lease.rentAmount}
-              suffix="/yr"
+              suffix="/mo"
               className="font-display text-xl text-foreground"
             />
           </CardContent>
@@ -116,7 +116,7 @@ export default async function LeaseDetailPage({
           <CardContent>
             <p className="text-xs text-muted">Service Charge</p>
             <Currency
-              amount={lease.serviceCharge}
+              amount={lease.serviceFee}
               className="font-display text-xl text-foreground"
             />
           </CardContent>

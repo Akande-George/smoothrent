@@ -9,7 +9,7 @@ import { mockDeals, mockProperties, mockPayments } from "@/lib/mock-data";
 
 const closedDeals = mockDeals.filter((d) => d.stage === "closed");
 const totalCommission = mockPayments
-  .filter((p) => p.type === "agent_commission")
+  .filter((p) => p.type === "referral_reward")
   .reduce((sum, p) => sum + p.amount, 0);
 const agentListings = mockProperties.filter((p) => p.agentId === "u3");
 
