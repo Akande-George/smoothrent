@@ -102,7 +102,7 @@ export function Sidebar({
   return (
     <aside
       className={cn(
-        "flex h-full flex-col border-r border-line bg-paper/80 backdrop-blur transition-all duration-200",
+        "flex h-full flex-col border-r border-white/10 bg-black text-white transition-all duration-200",
         isCollapsed ? "w-[72px]" : "w-64"
       )}
     >
@@ -111,11 +111,11 @@ export function Sidebar({
         <Link
           href={`/${role}`}
           aria-label="SmoothRent dashboard"
-          className="flex items-center gap-2.5 text-emerald"
+          className="flex items-center gap-2.5 text-saffron-deep"
         >
           <span className="brand-logo h-10 w-10 shrink-0" role="img" aria-hidden="true" />
           {!isCollapsed && (
-            <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-muted">
+            <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-white/50">
               Lagos · Abuja
             </span>
           )}
@@ -137,11 +137,11 @@ export function Sidebar({
       </nav>
 
       {/* Bottom */}
-      <div className="border-t border-line p-3 space-y-1">
+      <div className="border-t border-white/10 p-3 space-y-1">
         <button
           onClick={onToggle}
           className={cn(
-            "flex w-full items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium text-muted transition-colors hover:bg-emerald/[0.06] hover:text-foreground",
+            "flex w-full items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white [&_svg]:text-saffron-deep",
             isCollapsed && "justify-center px-2"
           )}
         >
@@ -161,7 +161,7 @@ export function Sidebar({
             onLogout?.();
           }}
           className={cn(
-            "flex w-full items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium text-clay transition-colors hover:bg-clay/10 hover:text-clay-deep",
+            "flex w-full items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium text-white/80 transition-colors hover:bg-clay/20 hover:text-white [&_svg]:text-clay",
             isCollapsed && "justify-center px-2"
           )}
           title="Sign out"

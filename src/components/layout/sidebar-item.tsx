@@ -27,8 +27,8 @@ export function SidebarItem({
       className={cn(
         "flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium transition-colors",
         isActive
-          ? "bg-foreground text-background"
-          : "text-muted hover:bg-black/5 hover:text-foreground",
+          ? "bg-white text-black [&_svg]:text-saffron-deep"
+          : "text-white/85 hover:bg-white/10 hover:text-white [&_svg]:text-saffron-deep",
         isCollapsed && "justify-center px-2"
       )}
     >

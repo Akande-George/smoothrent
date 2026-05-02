@@ -34,7 +34,7 @@ export function MobileNav({
         <div className="absolute right-2 top-3 z-10">
           <button
             onClick={onClose}
-            className="rounded-full p-2 hover:bg-black/5"
+            className="rounded-full p-2 text-white hover:bg-white/10"
             aria-label="Close menu"
           >
             <X className="h-5 w-5" />

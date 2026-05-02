@@ -38,7 +38,7 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
+    <div className="dashboard-shell flex h-screen overflow-hidden bg-background">
       <div className="hidden lg:block">
         <Sidebar
           role={role}

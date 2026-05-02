@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f1e9d7;
-  --background-deep: #ebe1cb;
-  --paper: #f7f0de;
+  --background: #ffffff;
+  --background-deep: #f5f5f5;
+  --paper: #ffffff;
   --foreground: #0a0a0a;
   --foreground-soft: #1c1c1c;
   --muted: #6b6b6b;
   --muted-strong: #3c3c3c;
-  --card: #fbf5e6;
+  --card: #ffffff;
   --line: rgba(10, 10, 10, 0.12);
   --line-strong: rgba(10, 10, 10, 0.32);
   --emerald: #0a0a0a;
@@ -19,7 +19,7 @@
   --clay: #b9532b;
   --clay-deep: #8b3a1b;
   --sand: #e6d3a4;
-  --ivory: #f5ecd6;
+  --ivory: #ffffff;
   --ring: rgba(10, 10, 10, 0.2);
   --accent: #d99a2b;
   --accent-strong: #a96e16;
@@ -404,4 +404,17 @@ body {
 /* ── Utility classes for legacy components ───────── */
 .bg-foreground\/\[0\.03\] {
   background-color: rgba(12, 31, 23, 0.03);
+}
+
+/* ── Dashboard typography override ───────────────── */
+.dashboard-shell,
+.dashboard-shell * {
+  font-family: var(--font-dashboard), "Inter Tight", system-ui, sans-serif;
+  font-feature-settings: normal;
+}
+
+.dashboard-shell .font-display,
+.dashboard-shell .font-mono {
+  font-family: var(--font-dashboard), "Inter Tight", system-ui, sans-serif;
+  letter-spacing: -0.01em;
 }

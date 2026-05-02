@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, Geist, Geist_Mono } from "next/font/google";
+import { Instrument_Serif, Geist, Geist_Mono, Inter_Tight } from "next/font/google";
 import "./globals.css";
 import { MockAuthProvider } from "@/components/providers/auth-provider";
 
@@ -20,6 +20,12 @@ const monoFont = Geist_Mono({
   subsets: ["latin"],
 });
 
+const dashboardFont = Inter_Tight({
+  variable: "--font-dashboard",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+});
+
 export const metadata: Metadata = {
   title: "SmoothRent — A quieter way to find a Nigerian home",
   description:
@@ -32,7 +38,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${displayFont.variable} ${bodyFont.variable} ${monoFont.variable}`}>
+    <html lang="en" className={`${displayFont.variable} ${bodyFont.variable} ${monoFont.variable} ${dashboardFont.variable}`}>
       <body className="antialiased">
         <MockAuthProvider>{children}</MockAuthProvider>
       </body>
