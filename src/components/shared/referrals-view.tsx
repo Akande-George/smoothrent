@@ -125,6 +125,27 @@ const PER_ROLE: Record<UserRole, RoleCopy> = {
       { label: "Top earner", value: "Emeka N." },
     ],
   },
+  artisan: {
+    eyebrow: "Artisan rewards",
+    headline: "Bring fellow pros onto SmoothRent.",
+    subhead:
+      "Refer plumbers, electricians, cleaners and other artisans you trust. Earn when their first job clears.",
+    rewardCopy: "₦7,500 per artisan onboarded",
+    rewardAmount: 7_500,
+    eligibleTargets: [
+      { kind: "service", label: "Refer an artisan", reward: 7_500, helper: "Earn when they complete their first paid job." },
+      { kind: "tenant", label: "Refer a tenant", reward: 3_000, helper: "Earn when they hire any artisan on the platform." },
+    ],
+    records: [
+      { id: "ar1", name: "Sade Akin — Painter", status: "pending", date: "2026-04-22", reward: 7_500, category: "service" },
+      { id: "ar2", name: "Kunle Okoro — Tiler", status: "completed", date: "2026-03-30", reward: 7_500, category: "service" },
+    ],
+    highlights: [
+      { label: "Referred", value: "4" },
+      { label: "Earned", value: formatNaira(15_000) },
+      { label: "Pending", value: formatNaira(7_500) },
+    ],
+  },
 };
 
 const PROGRAM_TIERS: { count: string; label: string; reward: string }[] = [

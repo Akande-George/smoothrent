@@ -72,3 +72,19 @@ export interface TenantReview {
   propertyCare?: "excellent" | "good" | "fair" | "poor";
   createdAt: string;
 }
+
+export type UserReviewRole = "customer" | "landlord" | "agent" | "artisan";
+
+export interface UserReview {
+  id: string;
+  subjectId: string;
+  subjectName: string;
+  subjectRole: UserReviewRole;
+  reviewerId: string;
+  reviewerName: string;
+  reviewerRole: UserReviewRole;
+  rating: number;
+  comment: string;
+  context?: string;
+  createdAt: string;
+}

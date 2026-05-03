@@ -25,6 +25,9 @@ import {
   Bell,
   Sparkles,
   Coins,
+  Hammer,
+  Briefcase,
+  Wallet,
 } from "lucide-react";
 import type { UserRole } from "@/types/user";
 import { SidebarItem } from "./sidebar-item";
@@ -39,6 +42,7 @@ const navConfig: Record<UserRole, { href: string; icon: React.ComponentType<{ cl
     { href: "/customer/payments", icon: CreditCard, label: "Payments" },
     { href: "/customer/leases", icon: ScrollText, label: "Leases" },
     { href: "/customer/services", icon: Sparkles, label: "Services" },
+    { href: "/customer/artisans", icon: Hammer, label: "Find artisans" },
     { href: "/customer/loans", icon: Coins, label: "Rental loans" },
     { href: "/customer/maintenance", icon: Wrench, label: "Maintenance" },
     { href: "/customer/referrals", icon: Handshake, label: "Referrals" },
@@ -66,10 +70,21 @@ const navConfig: Record<UserRole, { href: string; icon: React.ComponentType<{ cl
     { href: "/agent/clients", icon: Users, label: "Clients" },
     { href: "/agent/deals", icon: Handshake, label: "Deals" },
     { href: "/agent/referrals", icon: DollarSign, label: "Referrals" },
+    { href: "/agent/billing", icon: Wallet, label: "Billing" },
     { href: "/agent/reports", icon: BarChart3, label: "Reports" },
     { href: "/agent/notifications", icon: Bell, label: "Notifications" },
     { href: "/agent/profile", icon: UserCircle, label: "Profile" },
     { href: "/agent/settings", icon: Settings, label: "Settings" },
+  ],
+  artisan: [
+    { href: "/artisan", icon: LayoutDashboard, label: "Dashboard" },
+    { href: "/artisan/jobs", icon: Briefcase, label: "Jobs" },
+    { href: "/artisan/earnings", icon: Wallet, label: "Earnings" },
+    { href: "/artisan/services", icon: Hammer, label: "My services" },
+    { href: "/artisan/billing", icon: Coins, label: "Billing" },
+    { href: "/artisan/notifications", icon: Bell, label: "Notifications" },
+    { href: "/artisan/profile", icon: UserCircle, label: "Profile" },
+    { href: "/artisan/settings", icon: Settings, label: "Settings" },
   ],
   admin: [
     { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },

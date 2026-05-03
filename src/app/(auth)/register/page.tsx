@@ -11,6 +11,7 @@ import {
   Compass,
   Eye,
   EyeOff,
+  Hammer,
   KeyRound,
   Loader2,
 } from "lucide-react";
@@ -47,6 +48,13 @@ const roleOptions: {
     description: "Close deals, keep your commissions.",
     icon: KeyRound,
     perks: ["100% retention", "Pipeline tools", "Verified badge"],
+  },
+  {
+    value: "artisan",
+    label: "Artisan",
+    description: "Plumber, electrician, cleaner — get paid for jobs you take.",
+    icon: Hammer,
+    perks: ["Direct customer requests", "Choose your pricing model", "Verified-pro badge"],
   },
 ];
 

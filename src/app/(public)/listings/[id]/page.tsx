@@ -17,7 +17,13 @@ import { PropertyDetails } from "@/components/property/property-details";
 import { PropertyGrid } from "@/components/property/property-grid";
 import { PropertyActions } from "@/components/property/property-actions";
 import { PropertyReviews } from "@/components/property/property-reviews";
-import { mockProperties, mockPropertyReviews, mockUsers } from "@/lib/mock-data";
+import { UserReviewsCard } from "@/components/shared/user-reviews-card";
+import {
+  mockProperties,
+  mockPropertyReviews,
+  mockUserReviews,
+  mockUsers,
+} from "@/lib/mock-data";
 
 export default async function PropertyDetailPage({
   params,
@@ -33,6 +39,16 @@ export default async function PropertyDetailPage({
     .filter((p) => p.id !== property.id && p.city === property.city)
     .slice(0, 3);
   const reviews = mockPropertyReviews.filter((r) => r.propertyId === property.id);
+  const landlordReviews = landlord
+    ? mockUserReviews.filter(
+        (r) => r.subjectId === landlord.id && r.subjectRole === "landlord"
+      )
+    : [];
+  const agentReviews = agent
+    ? mockUserReviews.filter(
+        (r) => r.subjectId === agent.id && r.subjectRole === "agent"
+      )
+    : [];
 
   const formatNGN = (n: number) =>
     new Intl.NumberFormat("en-NG", {
@@ -97,6 +113,38 @@ export default async function PropertyDetailPage({
           <PropertyGallery images={property.images} />
           <PropertyDetails property={property} />
           <PropertyReviews propertyId={property.id} initialReviews={reviews} />
+          {landlord && (
+            <UserReviewsCard
+              subject={{
+                id: landlord.id,
+                name: `${landlord.firstName} ${landlord.lastName}`,
+                role: "landlord",
+              }}
+              reviewer={{
+                id: "u1",
+                name: "Chinedu Okafor",
+                role: "customer",
+              }}
+              initialReviews={landlordReviews}
+              emptyMessage="No reviews of this landlord yet — past tenants can leave the first one."
+            />
+          )}
+          {agent && (
+            <UserReviewsCard
+              subject={{
+                id: agent.id,
+                name: `${agent.firstName} ${agent.lastName}`,
+                role: "agent",
+              }}
+              reviewer={{
+                id: "u1",
+                name: "Chinedu Okafor",
+                role: "customer",
+              }}
+              initialReviews={agentReviews}
+              emptyMessage="No reviews of this agent yet."
+            />
+          )}
         </div>
 
         <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">

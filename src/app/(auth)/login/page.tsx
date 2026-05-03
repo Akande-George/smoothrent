@@ -14,6 +14,7 @@ const QUICK_LOGINS: { role: UserRole; label: string; email: string }[] = [
   { role: "customer", label: "Tenant", email: "chinedu@gmail.com" },
   { role: "landlord", label: "Landlord", email: "aisha@gmail.com" },
   { role: "agent", label: "Agent", email: "emeka@gmail.com" },
+  { role: "artisan", label: "Artisan", email: "tunde.b@gmail.com" },
   { role: "admin", label: "Admin", email: "fatima@smoothrent.io" },
 ];
 
@@ -55,7 +56,10 @@ function LoginForm() {
 
   const next = searchParams.get("next");
 
-  const handleSignIn = async (overrideEmail?: string, overridePassword?: string) => {
+  const handleSignIn = async (
+    overrideEmail?: string,
+    overridePassword?: string,
+  ) => {
     setError(null);
     const e = (overrideEmail ?? email).trim().toLowerCase();
     const p = overridePassword ?? password;
@@ -75,7 +79,9 @@ function LoginForm() {
     setLoading(false);
 
     if (!user) {
-      setError("No SmoothRent account matches that email. Try a quick login below.");
+      setError(
+        "No SmoothRent account matches that email. Try a quick login below.",
+      );
       return;
     }
 
@@ -137,7 +143,11 @@ function LoginForm() {
             onClick={() => setShowPassword((v) => !v)}
             className="absolute bottom-2 right-2 flex h-8 w-8 items-center justify-center rounded-full text-muted hover:bg-emerald/[0.06] hover:text-emerald"
           >
-            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            {showPassword ? (
+              <EyeOff className="h-4 w-4" />
+            ) : (
+              <Eye className="h-4 w-4" />
+            )}
           </button>
         </div>
 
@@ -208,7 +218,7 @@ function LoginForm() {
         <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted">
           Demo · One-tap dashboard preview
         </p>
-        <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+        <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
           {QUICK_LOGINS.map((q) => (
             <button
               key={q.role}
@@ -218,7 +228,7 @@ function LoginForm() {
                 handleSignIn(q.email, "demo");
               }}
               disabled={loading}
-              className="rounded-full border border-line bg-paper px-3 py-2 text-xs font-medium text-foreground transition hover:border-emerald hover:bg-emerald hover:text-ivory"
+              className="rounded-full border border-line bg-paper py-2 text-xs font-medium text-foreground transition hover:border-emerald hover:bg-emerald hover:text-ivory"
             >
               {q.label}
             </button>

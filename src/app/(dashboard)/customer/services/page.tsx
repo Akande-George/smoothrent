@@ -1,12 +1,14 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import {
   ArrowUpRight,
   Calendar,
   CheckCircle2,
   ChevronRight,
   Clock,
+  Hammer,
   History,
   Pause,
   Play,
@@ -168,6 +170,30 @@ export default function CustomerServicesPage() {
             </p>
           </div>
         )}
+
+        <Link
+          href="/customer/artisans"
+          className="mt-6 flex flex-col gap-3 overflow-hidden rounded-2xl border border-emerald-deep bg-emerald p-5 text-ivory transition hover:-translate-y-0.5 sm:flex-row sm:items-center sm:gap-5"
+        >
+          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-ivory text-emerald-deep">
+            <Hammer className="h-5 w-5" />
+          </span>
+          <div className="flex-1">
+            <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-saffron">
+              Direct hire
+            </p>
+            <h3 className="mt-1 font-display text-xl">
+              Need a one-off plumber, electrician or cleaner?
+            </h3>
+            <p className="text-sm text-ivory/85">
+              Browse the SmoothRent artisan directory — KYC-verified pros, transparent
+              pricing, pay through the platform.
+            </p>
+          </div>
+          <span className="inline-flex items-center gap-1 rounded-full bg-saffron px-3 py-1.5 text-xs font-medium text-emerald-deep">
+            Browse artisans <ArrowUpRight className="h-3.5 w-3.5" />
+          </span>
+        </Link>
       </section>
 
       {/* Stats */}

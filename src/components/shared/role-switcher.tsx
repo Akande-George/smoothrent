@@ -7,6 +7,7 @@ const roles: { value: UserRole; label: string }[] = [
   { value: "customer", label: "Customer" },
   { value: "landlord", label: "Landlord" },
   { value: "agent", label: "Agent" },
+  { value: "artisan", label: "Artisan" },
   { value: "admin", label: "Admin" },
 ];
 
